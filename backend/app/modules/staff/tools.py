@@ -8,6 +8,13 @@ from app.core.agents.tools import Tool, ToolCategory
 
 from .service import StaffProfileService, TaskService, FinanceService
 
+from uuid import UUID
+
+
+async def _update_task_status(ctx, task_id: str, status: str):
+    task = await TaskService.get(ctx.db, UUID(task_id))
+    return await TaskService.update_status(ctx.db, task, status, ctx.staff_id)
+
 
 def get_tools() -> list[Tool]:
     return [
@@ -99,9 +106,7 @@ def get_tools() -> list[Tool]:
                 },
                 "required": ["task_id", "status"],
             },
-            handler=lambda ctx, task_id, status, **kw: TaskService.update_status(
-                ctx.db, await TaskService.get(ctx.db, UUID(task_id)), status, ctx.staff_id
-            ),
+            handler=lambda ctx, task_id, status, **kw: _update_task_status(ctx, task_id, status),
             permissions=["tasks.write"],
             category=ToolCategory.WRITE,
             exposes_free_text=False,
