@@ -28,8 +28,8 @@ async def onboard_tenant(
     admin_password: str,
     admin_first_name: str,
     admin_last_name: str,
-    timezone: str = "Europe/Madrid",
-    currency: str = "EUR",
+    timezone: str = "Africa/Cairo",
+    currency: str = "EGP",
     custom_domain: str | None = None,
     portal_title: str | None = None,
 ) -> tuple[Clinic, TenantBranding, User]:

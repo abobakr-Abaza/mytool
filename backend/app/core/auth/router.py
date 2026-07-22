@@ -116,8 +116,8 @@ async def setup(
     clinic = Clinic(
         name=data.clinic_name,
         tax_id=data.clinic_tax_id,
-        timezone=data.timezone or "Europe/Madrid",
-        currency=data.currency or "EUR",
+        timezone=data.timezone or "Africa/Cairo",
+        currency=data.currency or "EGP",
     )
     db.add(clinic)
     await db.flush()

@@ -16,7 +16,7 @@ def _validate_iana_timezone(value: str | None) -> str | None:
     except ZoneInfoNotFoundError as exc:
         raise ValueError(
             f"Invalid timezone '{value}'. Must be an IANA id "
-            "(e.g. 'Europe/Madrid', 'America/New_York')."
+            "(e.g. 'Africa/Cairo', 'Europe/Madrid', 'America/New_York')."
         ) from exc
     return value
 

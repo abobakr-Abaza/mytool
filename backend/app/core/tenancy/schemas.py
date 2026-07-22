@@ -53,8 +53,8 @@ class TenantOnboardRequest(BaseModel):
     admin_password: str = Field(..., min_length=8)
     admin_first_name: str = Field(..., min_length=1, max_length=100)
     admin_last_name: str = Field(..., min_length=1, max_length=100)
-    timezone: str = Field(default="Europe/Madrid", max_length=64)
-    currency: str = Field(default="EUR", max_length=3)
+    timezone: str = Field(default="Africa/Cairo", max_length=64)
+    currency: str = Field(default="EGP", max_length=3)
     custom_domain: str | None = Field(None, max_length=255)
     portal_title: str | None = Field(None, max_length=200)
 

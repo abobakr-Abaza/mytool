@@ -1,0 +1,148 @@
+{
+  "app": {
+    "name": "لامينار دنت",
+    "tagline": "إدارة عيادات الأسنان"
+  },
+  "demo": {
+    "bannerMessage": "نسخة تجريبية عامة — لا تدخل بيانات مرضى حقيقية. يتم إعادة ضبط قاعدة البيانات دورياً.",
+    "bannerDismiss": "تجاهل",
+    "credentialsTitle": "بيانات الدخول التجريبية",
+    "credentialsNote": "للتقييم فقط — تظهر لأن هذه نسخة تجريبية عامة.",
+    "copyEmail": "نسخ البريد الإلكتروني",
+    "copyPassword": "نسخ كلمة المرور",
+    "copied": "تم النسخ إلى الحافظة"
+  },
+  "nav": {
+    "dashboard": "الرئيسية",
+    "patients": "المرضى",
+    "appointments": "المواعيد",
+    "recalls": "التذكيرات",
+    "treatmentPlans": "خطط العلاج",
+    "budgets": "عروض الأسعار",
+    "invoices": "الفواتير",
+    "reports": "التقارير",
+    "settings": "الإعدادات",
+    "defaultClinicName": "العيادة",
+    "catalog": "دليل الخدمات",
+    "menu": "القائمة",
+    "openMenu": "فتح القائمة",
+    "close": "إغلاق",
+    "toggleSidebar": "تبديل الشريط الجانبي"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "loginButton": "دخول",
+    "loginSuccess": "تم تسجيل الدخول بنجاح",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "emailRequired": "أدخل بريدك الإلكتروني",
+    "passwordRequired": "أدخل كلمة المرور",
+    "emailInvalid": "البريد الإلكتروني غير صالح",
+    "accountInactive": "حسابك غير نشط. تواصل مع المسؤول",
+    "tooManyAttempts": "محاولات كثيرة جداً. حاول مرة أخرى بعد دقائق",
+    "sessionExpired": "انتهت صلاحية الجلسة",
+    "networkError": "تعذر الاتصال بالخادم",
+    "serverError": "الخادم غير متاح. حاول مرة أخرى بعد قليل",
+    "unknownError": "خطأ غير متوقع. حاول مرة أخرى"
+  },
+  "setup": {
+    "title": "الإعداد الأولي",
+    "subtitle": "أنشئ حساب المسؤول والعيادة للبدء",
+    "stepAccount": "حساب المسؤول",
+    "stepClinic": "بيانات العيادة",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordConfirm": "تأكيد كلمة المرور",
+    "passwordHint": "8 أحرف على الأقل، مع حروف وأرقام",
+    "clinicName": "اسم العيادة",
+    "taxId": "الرقم الضريبي",
+    "next": "التالي",
+    "back": "رجوع",
+    "submit": "إنشاء والبدء",
+    "success": "تم الإعداد! مرحباً بك في لامينار دنت"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "create": "إنشاء",
+    "delete": "حذف",
+    "close": "إغلاق",
+    "remove": "إزالة"
+  },
+  "patients": {
+    "title": "المرضى",
+    "create": "مريض جديد",
+    "edit": "تعديل المريض",
+    "search": "بحث عن مريض...",
+    "searchPlaceholder": "الاسم أو رقم الهاتف",
+    "noResults": "لم يتم العثور على مرضى",
+    "empty": "لا يوجد مرضى مسجلين",
+    "emptyAction": "إنشاء أول مريض",
+    "name": "الاسم",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "dateOfBirth": "تاريخ الميلاد",
+    "notes": "ملاحظات"
+  },
+  "appointments": {
+    "title": "المواعيد",
+    "create": "موعد جديد",
+    "edit": "تعديل الموعد",
+    "today": "اليوم",
+    "week": "الأسبوع",
+    "patient": "المريض",
+    "professional": "الطبيب",
+    "cabinet": "العيادة",
+    "date": "التاريخ",
+    "time": "الوقت",
+    "status": {
+      "scheduled": "مجدول",
+      "confirmed": "مؤكد",
+      "completed": "مكتمل",
+      "cancelled": "ملغي"
+    }
+  },
+  "dashboard": {
+    "welcome": "مرحباً بك في لامينار دنت",
+    "welcomeMessage": "ابدأ بإنشاء أول مريض."
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "clinic": "العيادة",
+    "profile": "الملف الشخصي",
+    "language": "اللغة",
+    "users": "المستخدمون"
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "loading": "جارٍ التحميل...",
+    "error": "خطأ",
+    "success": "تم بنجاح",
+    "search": "بحث...",
+    "yes": "نعم",
+    "no": "لا",
+    "today": "اليوم",
+    "copied": "تم النسخ إلى الحافظة"
+  },
+  "catalog": {
+    "title": "دليل الخدمات"
+  },
+  "vatTypes": {
+    "title": "أنواع ضريبة القيمة المضافة"
+  },
+  "treatmentPlans": {
+    "title": "خطط العلاج"
+  }
+}
