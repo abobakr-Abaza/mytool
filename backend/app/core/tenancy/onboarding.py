@@ -10,7 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.auth.models import Clinic, ClinicMembership, User
-from app.core.auth.service import get_password_hash
+from app.core.auth.service import hash_password as get_password_hash
 
 from .models import TenantBranding
 
