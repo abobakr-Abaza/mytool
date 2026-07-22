@@ -629,14 +629,14 @@ class ChatService:
             last_read = read_entries.get(key)
             if last_read is None or row.last_msg_at > last_read:
                 count_cond = [
-                        ChatMessage.channel_type == row.channel_type,
-                        ChatMessage.channel_id == row.channel_id,
-                    ]
-                    if last_read is not None:
-                        count_cond.append(ChatMessage.created_at > last_read)
-                    count_result = await db.execute(
-                        select(func.count(ChatMessage.id)).where(*count_cond)
-                    )
+                    ChatMessage.channel_type == row.channel_type,
+                    ChatMessage.channel_id == row.channel_id,
+                ]
+                if last_read is not None:
+                    count_cond.append(ChatMessage.created_at > last_read)
+                count_result = await db.execute(
+                    select(func.count(ChatMessage.id)).where(*count_cond)
+                )
                 cnt = count_result.scalar() or 0
                 if last_read is None:
                     cnt = row.total
