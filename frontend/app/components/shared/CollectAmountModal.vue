@@ -55,6 +55,9 @@ const METHODS: MethodOption[] = [
   { value: 'card', icon: 'i-lucide-credit-card' },
   { value: 'bank_transfer', icon: 'i-lucide-landmark' },
   { value: 'direct_debit', icon: 'i-lucide-repeat' },
+  { value: 'instapay', icon: 'i-lucide-smartphone' },
+  { value: 'vodafone_cash', icon: 'i-lucide-mobile' },
+  { value: 'pos_card', icon: 'i-lucide-credit-card' },
   { value: 'insurance', icon: 'i-lucide-shield' },
   { value: 'other', icon: 'i-lucide-more-horizontal' }
 ]

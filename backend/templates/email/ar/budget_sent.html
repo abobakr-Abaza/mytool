@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}مقايسة علاج - {{ clinic_name | default('لامينار دنت') }}{% endblock %}
+{% block content %}
+<h2>مقايسة علاج</h2>
+<p>أهلاً {{ patient_name }}،</p>
+<p>نرفق لكم مقايسة العلاج <strong>#{{ budget_number }}</strong> من <strong>{{ clinic_name | default('لامينار دنت') }}</strong>:</p>
+{% if treatments %}
+<div class="info-box">
+    {% for t in treatments %}
+    <div class="info-row">
+        <div style="flex: 2;">
+            <div class="label">{{ t.name }}{% if t.tooth %} — السن {{ t.tooth }}{% endif %}</div>
+        </div>
+        <div style="flex: 1; text-align: right;">
+            <div class="value">{{ t.price }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="info-box">
+    {% if discount_amount %}
+    <div class="info-row">
+        <div class="label">المجموع الفرعي</div>
+        <div class="value">{{ subtotal }}</div>
+    </div>
+    <div class="info-row">
+        <div class="label">الخصم</div>
+        <div class="value">-{{ discount_amount }}</div>
+    </div>
+    {% endif %}
+    <div class="info-row">
+        <div class="label">الإجمالي</div>
+        <div class="value" style="font-size: 18px; font-weight: 700;">{{ total }}</div>
+    </div>
+    {% if validity_days %}
+    <div class="info-row">
+        <div class="label">صالحة لمدة</div>
+        <div class="value">{{ validity_days }} يوماً</div>
+    </div>
+    {% endif %}
+</div>
+{% if notes %}
+<p><strong>ملاحظات:</strong> {{ notes }}</p>
+{% endif %}
+{% if custom_message %}
+<div class="alert alert-info">{{ custom_message }}</div>
+{% endif %}
+<p>يرجى التواصل معنا إذا كان لديك أي استفسار بخصوص هذه المقايسة.</p>
+{% endblock %}

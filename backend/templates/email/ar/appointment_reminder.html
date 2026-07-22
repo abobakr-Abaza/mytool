@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}تذكير بالموعد - {{ clinic_name | default('لامينار دنت') }}{% endblock %}
+{% block content %}
+<h2>تذكير بالموعد</h2>
+<p>أهلاً {{ patient_name }}،</p>
+<p>هذا تذكير بموعدك القادم في <strong>{{ clinic_name | default('لامينار دنت') }}</strong>:</p>
+<div class="info-box">
+    <div class="info-row">
+        <div style="flex: 1;">
+            <div class="label">التاريخ</div>
+            <div class="value">{{ appointment_date }}</div>
+        </div>
+        <div style="flex: 1;">
+            <div class="label">الوقت</div>
+            <div class="value">{{ appointment_time }}</div>
+        </div>
+    </div>
+    {% if professional_name %}
+    <div class="info-row">
+        <div style="flex: 1;">
+            <div class="label">الطبيب</div>
+            <div class="value">{{ professional_name }}</div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<p>نرجو الحضور قبل الموعد بوقت كافٍ. إذا احتجت تغيير الموعد، تواصل معنا في أقرب وقت.</p>
+{% endblock %}

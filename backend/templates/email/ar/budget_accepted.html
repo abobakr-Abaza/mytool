@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}تم قبول المقايسة - {{ clinic_name | default('لامينار دنت') }}{% endblock %}
+{% block content %}
+<h2>تم قبول المقايسة</h2>
+<p>أهلاً {{ patient_name }}،</p>
+<p>نشكرك على قبول مقايسة العلاج <strong>#{{ budget_number }}</strong> في <strong>{{ clinic_name | default('لامينار دنت') }}</strong>.</p>
+<p>سيتم التواصل معك لتحديد موعد البدء في العلاج. إذا كان لديك أي استفسار، لا تتردد في سؤالك.</p>
+{% endblock %}

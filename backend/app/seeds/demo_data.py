@@ -15,7 +15,7 @@ from uuid import UUID, uuid4
 # Language Configuration
 # =============================================================================
 
-SupportedLang = Literal["es", "en", "fr"]
+SupportedLang = Literal["es", "en", "fr", "ar"]
 LANG: SupportedLang = "en"  # Default language
 
 
@@ -84,11 +84,13 @@ def get_clinic_data() -> dict:
         "name": t(
             {
                 "es": "Clínica Dental Demo",
-                "en": "Demo Dental Clinic",
+                "en": "Nile Dental Clinics",
                 "fr": "Clinique Dentaire Démo",
+                "ar": "عيادات النيل للأسنان",
             }
         ),
-        "tax_id": t({"es": "B12345678", "en": "12-3456789", "fr": "12-3456789"}),
+        "tax_id": t({"es": "B12345678", "en": "12-3456789", "fr": "12-3456789", "ar": "123-456-789"}),
+        "tax_registration": t({"ar": "310-123-456", "en": "310-123-456", "es": "310-123-456"}),
         "address": {
             "street": t(
                 {"es": "Calle Gran Vía 123", "en": "123 Main Street", "fr": "123 Rue Principale"}
@@ -113,11 +115,11 @@ def get_clinic_data() -> dict:
         },
         "cabinets": [
             {
-                "name": t({"es": "Gabinete 1", "en": "Room 1", "fr": "Cabinet 1"}),
+                "name": t({"es": "Gabinete 1", "en": "Chair 1", "fr": "Cabinet 1", "ar": "كرسي 1"}),
                 "color": "#3B82F6",
             },
             {
-                "name": t({"es": "Gabinete 2", "en": "Room 2", "fr": "Cabinet 2"}),
+                "name": t({"es": "Gabinete 2", "en": "Chair 2", "fr": "Cabinet 2", "ar": "كرسي 2"}),
                 "color": "#10B981",
             },
         ],
@@ -1123,20 +1125,25 @@ def get_patients_data() -> list[dict]:
 
         # Handle emergency_contact: dict with language keys or None
         emergency_contact = p.get("emergency_contact")
-        if isinstance(emergency_contact, dict) and LANG in emergency_contact:
-            emergency_contact = emergency_contact[LANG]
+        if isinstance(emergency_contact, dict):
+            # Fallback to English if target locale is missing
+            e_lang = LANG if LANG in emergency_contact else "en"
+            emergency_contact = emergency_contact[e_lang]
 
         # Handle medical_history: translate nested fields
         medical_history = _translate_medical_history(p.get("medical_history"))
 
+        # Fallback to English locale for patient names/notes if target missing
+        p_locale = p.get(LANG, p.get("en", {}))
+
         patient = {
             "id": p["id"],
-            "first_name": p[LANG]["first_name"],
-            "last_name": p[LANG]["last_name"],
+            "first_name": p_locale["first_name"],
+            "last_name": p_locale["last_name"],
             "phone": phone,
             "email": email,
             "date_of_birth": p["date_of_birth"],
-            "notes": p[LANG]["notes"],
+            "notes": p_locale.get("notes"),
             # Consumed downstream by seed_demo._seed_patient_clinical to
             # populate the normalized patients_clinical_* tables (B.4).
             "emergency_contact": emergency_contact,

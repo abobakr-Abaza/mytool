@@ -2401,6 +2401,9 @@
         "card": "Card",
         "bank_transfer": "Bank transfer",
         "direct_debit": "Direct debit",
+        "instapay": "InstaPay",
+        "vodafone_cash": "Vodafone Cash",
+        "pos_card": "POS / Card",
         "insurance": "Insurance",
         "other": "Other"
       }

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}مرحباً بك في {{ clinic_name | default('لامينار دنت') }}{% endblock %}
+{% block content %}
+<h2>مرحباً بك!</h2>
+<p>أهلاً {{ patient_name }}،</p>
+<p>يسعدنا الترحيب بك في <strong>{{ clinic_name | default('لامينار دنت') }}</strong>.</p>
+<p>يمكنك الآن إدارة مواعيدك وعرض سجل علاجك والوصول لجميع خدماتنا من خلال المنصة.</p>
+<p>إذا كان لديك أي استفسار، لا تتردد في التواصل معنا.</p>
+{% endblock %}

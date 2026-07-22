@@ -28,7 +28,11 @@ if TYPE_CHECKING:
 
 
 # Allowed payment methods (kept as plain list — schemas validate via Literal).
-PAYMENT_METHODS = ["cash", "card", "bank_transfer", "direct_debit", "insurance", "other"]
+# Egyptian market: cash, InstaPay, Vodafone Cash, POS terminal, bank transfer.
+PAYMENT_METHODS = [
+    "cash", "card", "bank_transfer", "direct_debit", "instapay",
+    "vodafone_cash", "pos_card", "insurance", "other",
+]
 
 # Allocation targets that don't require a foreign key (``on_account``)
 # vs targets backed by another row (``budget``).

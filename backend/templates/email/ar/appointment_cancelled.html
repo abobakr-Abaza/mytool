@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}إلغاء الموعد - {{ clinic_name | default('لامينار دنت') }}{% endblock %}
+{% block content %}
+<h2>تم إلغاء الموعد</h2>
+<p>أهلاً {{ patient_name }}،</p>
+<p>تم إلغاء موعدك في <strong>{{ clinic_name | default('لامينار دنت') }}</strong>.</p>
+{% if appointment_date and appointment_time %}
+<div class="info-box">
+    <div class="info-row">
+        <div style="flex: 1;">
+            <div class="label">تاريخ الموعد الملغي</div>
+            <div class="value">{{ appointment_date }}</div>
+        </div>
+        <div style="flex: 1;">
+            <div class="label">الوقت</div>
+            <div class="value">{{ appointment_time }}</div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<p>إذا رغبت في حجز موعد جديد، يمكنك التواصل معنا وسنكون سعداء بمساعدتك.</p>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}تأكيد الموعد - {{ clinic_name | default('لامينار دنت') }}{% endblock %}
+{% block content %}
+<h2>تأكيد الموعد</h2>
+<p>أهلاً {{ patient_name }}،</p>
+<p>نؤكد موعدك في <strong>{{ clinic_name | default('لامينار دنت') }}</strong>:</p>
+<div class="info-box">
+    <div class="info-row">
+        <div style="flex: 1;">
+            <div class="label">التاريخ</div>
+            <div class="value">{{ appointment_date }}</div>
+        </div>
+        <div style="flex: 1;">
+            <div class="label">الوقت</div>
+            <div class="value">{{ appointment_time }}</div>
+        </div>
+    </div>
+    {% if professional_name %}
+    <div class="info-row">
+        <div style="flex: 1;">
+            <div class="label">الطبيب</div>
+            <div class="value">{{ professional_name }}</div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<p>إذا احتجت تغيير الموعد أو إلغائه، نرجو التواصل معنا في أقرب وقت.</p>
+{% endblock %}

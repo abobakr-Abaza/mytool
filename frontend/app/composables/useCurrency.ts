@@ -14,7 +14,7 @@ export function useCurrency() {
     if (amount == null || amount === '') return '—'
     const value = typeof amount === 'string' ? Number(amount) : amount
     if (Number.isNaN(value)) return '—'
-    const currency = currentClinic.value?.currency ?? 'EUR'
+    const currency = currentClinic.value?.currency ?? 'EGP'
     return new Intl.NumberFormat(currentLocale.value, {
       style: 'currency',
       currency
@@ -22,7 +22,7 @@ export function useCurrency() {
   }
 
   function symbol(): string {
-    const currency = currentClinic.value?.currency ?? 'EUR'
+    const currency = currentClinic.value?.currency ?? 'EGP'
     const parts = new Intl.NumberFormat(currentLocale.value, {
       style: 'currency',
       currency,
@@ -34,6 +34,6 @@ export function useCurrency() {
   return {
     format,
     symbol,
-    currency: computed(() => currentClinic.value?.currency ?? 'EUR')
+    currency: computed(() => currentClinic.value?.currency ?? 'EGP')
   }
 }
