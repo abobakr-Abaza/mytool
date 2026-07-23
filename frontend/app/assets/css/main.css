@@ -320,3 +320,28 @@ body {
 [data-radix-popper-content-wrapper] {
   z-index: 9999 !important;
 }
+
+/* ============================================================================
+   Modal scroll — force flex layout on Nuxt UI dialog panels so the footer
+   stays pinned to the bottom regardless of content height. The Teleported
+   overlay can override inline :ui classes, so we use !important here as a
+   safety net. See docs/technical/design-system.md §Modals.
+   ============================================================================ */
+
+[role="dialog"] > div {
+  display: flex !important;
+  flex-direction: column !important;
+  max-height: 85vh !important;
+  overflow: hidden !important;
+}
+
+[role="dialog"] [class*="body"] {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+}
+
+[role="dialog"] [class*="footer"],
+[role="dialog"] [class*="header"] {
+  flex-shrink: 0 !important;
+}

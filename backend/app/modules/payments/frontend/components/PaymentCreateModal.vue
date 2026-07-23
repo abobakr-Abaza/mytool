@@ -237,11 +237,16 @@ function handleKeydown(e: KeyboardEvent) {
   <UModal
     :open="open"
     :title="t('payments.new.title')"
+    :ui="{
+      content: '!max-h-[90vh] flex flex-col',
+      body: 'flex-1 min-h-0 overflow-y-auto',
+      footer: 'shrink-0'
+    }"
     @update:open="emit('update:open', $event)"
   >
     <template #body>
       <div
-        class="space-y-5"
+        class="space-y-5 p-1"
         @keydown="handleKeydown"
       >
         <!-- Patient header (read-only when locked). The admin flow at

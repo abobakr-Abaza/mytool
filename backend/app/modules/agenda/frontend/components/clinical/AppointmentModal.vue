@@ -621,8 +621,10 @@ function openPatientFile() {
     <template #content>
       <UCard
         :ui="{
-          root: isMobile ? 'h-full flex flex-col' : 'sm:max-w-2xl',
-          body: isMobile ? 'flex-1 min-h-0 overflow-hidden p-0' : ''
+          root: 'max-h-[90vh] flex flex-col',
+          header: 'shrink-0',
+          footer: 'shrink-0',
+          body: 'flex-1 min-h-0 overflow-hidden p-0'
         }"
       >
         <template #header>
@@ -663,11 +665,7 @@ function openPatientFile() {
           </div>
         </template>
 
-        <div
-          :class="isMobile
-            ? 'h-full overflow-y-auto px-4 py-4'
-            : 'max-h-[65vh] overflow-y-auto pr-1'"
-        >
+        <div class="h-full overflow-y-auto px-4 py-4">
           <form
             class="space-y-6"
             @submit.prevent="handleSave"

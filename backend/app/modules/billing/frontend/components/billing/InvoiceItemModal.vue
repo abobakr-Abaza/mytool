@@ -245,7 +245,15 @@ watch(open, async (isOpen) => {
 <template>
   <UModal v-model:open="open">
     <template #content>
-      <UCard class="w-full max-w-lg">
+      <UCard
+        class="w-full max-w-lg"
+        :ui="{
+          root: 'max-h-[90vh] flex flex-col',
+          header: 'shrink-0',
+          footer: 'shrink-0',
+          body: 'flex-1 min-h-0 overflow-hidden p-0'
+        }"
+      >
         <template #header>
           <div class="flex items-center justify-between">
             <h2 class="text-h1 text-default">
@@ -260,7 +268,7 @@ watch(open, async (isOpen) => {
           </div>
         </template>
 
-        <div class="max-h-[60vh] overflow-y-auto pr-1">
+        <div class="h-full overflow-y-auto px-4 py-4">
           <form
             class="space-y-4"
             @submit.prevent="handleSubmit"

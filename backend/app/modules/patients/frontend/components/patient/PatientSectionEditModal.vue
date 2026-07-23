@@ -247,7 +247,7 @@ const canSave = computed(() => {
     @update:open="emit('update:open', $event)"
   >
     <template #content>
-      <UCard :ui="{ root: 'w-full max-w-2xl', body: 'overflow-visible' }">
+      <UCard :ui="{ root: 'w-full max-w-2xl max-h-[90vh] flex flex-col', header: 'shrink-0', footer: 'shrink-0', body: 'flex-1 min-h-0 overflow-hidden p-0' }">
         <template #header>
           <div class="flex items-center justify-between">
             <h2 class="text-h1 text-default">
@@ -267,7 +267,7 @@ const canSave = computed(() => {
         <!-- Demographics Form -->
         <div
           v-if="section === 'demographics'"
-          class="space-y-4 max-h-[65vh] overflow-y-auto pr-1"
+          class="space-y-4 h-full overflow-y-auto px-4 py-4"
         >
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <UFormField
@@ -350,7 +350,7 @@ const canSave = computed(() => {
         <!-- Emergency Contact Form -->
         <div
           v-else-if="section === 'emergency'"
-          class="space-y-4 max-h-[65vh] overflow-y-auto pr-1"
+          class="space-y-4 h-full overflow-y-auto px-4 py-4"
         >
           <EmergencyContactForm v-model="emergencyForm" />
         </div>
@@ -358,7 +358,7 @@ const canSave = computed(() => {
         <!-- Legal Guardian Form -->
         <div
           v-else-if="section === 'guardian'"
-          class="space-y-4 max-h-[65vh] overflow-y-auto pr-1"
+          class="space-y-4 h-full overflow-y-auto px-4 py-4"
         >
           <LegalGuardianForm v-model="guardianForm" />
         </div>
@@ -366,7 +366,7 @@ const canSave = computed(() => {
         <!-- Billing Form -->
         <div
           v-else-if="section === 'billing'"
-          class="space-y-4 max-h-[65vh] overflow-y-auto pr-1"
+          class="space-y-4 h-full overflow-y-auto px-4 py-4"
         >
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <UFormField :label="t('patients.billingName')">
@@ -417,7 +417,7 @@ const canSave = computed(() => {
         <!-- Medical History Form -->
         <div
           v-else-if="section === 'medical'"
-          class="max-h-[65vh] overflow-y-auto pr-1"
+          class="h-full overflow-y-auto px-4 py-4"
         >
           <MedicalHistoryForm
             v-if="medicalHistory"

@@ -134,7 +134,15 @@ watch(() => props.open, (isOpen) => {
     @update:open="emit('update:open', $event)"
   >
     <template #content>
-      <UCard class="w-full max-w-lg">
+      <UCard
+        class="w-full max-w-lg"
+        :ui="{
+          root: 'max-h-[90vh] flex flex-col',
+          header: 'shrink-0',
+          footer: 'shrink-0',
+          body: 'flex-1 min-h-0 overflow-hidden p-0'
+        }"
+      >
         <template #header>
           <div class="flex items-center justify-between">
             <h2 class="text-h1 text-default">
@@ -149,110 +157,112 @@ watch(() => props.open, (isOpen) => {
           </div>
         </template>
 
-        <form
-          class="space-y-4"
-          @submit.prevent="handleSubmit"
-        >
-          <!-- Catalog item search -->
-          <UFormField
-            :label="t('budget.items.treatment')"
-            required
+        <div class="h-full overflow-y-auto px-4 py-4">
+          <form
+            class="space-y-4"
+            @submit.prevent="handleSubmit"
           >
-            <TreatmentVisualSelector
-              :model-value="selectedItem"
-              :in-modal="true"
-              @update:model-value="handleItemSelect"
-            />
-          </UFormField>
-
-          <!-- Quantity -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <UFormField :label="t('budget.items.quantity')">
-              <UInput
-                v-model.number="form.quantity"
-                type="number"
-                min="1"
-                required
-              />
-            </UFormField>
-
-            <UFormField :label="t('budget.items.toothNumber')">
-              <UInput
-                v-model.number="form.tooth_number"
-                type="number"
-                min="11"
-                max="85"
-                :placeholder="t('budget.items.toothNumberPlaceholder')"
-              />
-            </UFormField>
-          </div>
-
-          <!-- Tooth surfaces -->
-          <UFormField
-            v-if="form.tooth_number"
-            :label="t('budget.items.surfaces')"
-          >
-            <div class="flex flex-wrap gap-2">
-              <UButton
-                v-for="surface in toothSurfaces"
-                :key="surface"
-                size="sm"
-                :variant="form.surfaces?.includes(surface) ? 'solid' : 'outline'"
-                :color="form.surfaces?.includes(surface) ? 'primary' : 'neutral'"
-                @click="toggleSurface(surface)"
-              >
-                {{ surface }}
-              </UButton>
-            </div>
-          </UFormField>
-
-          <!-- Discount -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <UFormField :label="t('budget.discountType')">
-              <USelectMenu
-                v-model="form.discount_type"
-                :items="[
-                  { label: '-', value: '' },
-                  { label: t('budget.percentage'), value: 'percentage' },
-                  { label: t('budget.absolute'), value: 'absolute' }
-                ]"
-                value-key="value"
-              />
-            </UFormField>
+            <!-- Catalog item search -->
             <UFormField
-              v-if="form.discount_type"
-              :label="t('budget.discountValue')"
+              :label="t('budget.items.treatment')"
+              required
             >
-              <UInput
-                v-model.number="form.discount_value"
-                type="number"
-                step="0.01"
-                min="0"
-                :max="form.discount_type === 'percentage' ? 100 : undefined"
+              <TreatmentVisualSelector
+                :model-value="selectedItem"
+                :in-modal="true"
+                @update:model-value="handleItemSelect"
               />
             </UFormField>
-          </div>
 
-          <!-- Notes -->
-          <UFormField :label="t('budget.items.notes')">
-            <UTextarea
-              v-model="form.notes"
-              :placeholder="t('budget.items.notesPlaceholder')"
-              :rows="2"
-            />
-          </UFormField>
+            <!-- Quantity -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <UFormField :label="t('budget.items.quantity')">
+                <UInput
+                  v-model.number="form.quantity"
+                  type="number"
+                  min="1"
+                  required
+                />
+              </UFormField>
 
-          <!-- Preview total -->
-          <div
-            v-if="selectedItem"
-            class="flex justify-between items-center p-3 bg-surface-muted rounded-lg"
-          >
-            <span class="text-muted">{{ t('budget.items.lineTotal') }}</span>
-            <span class="text-h1 tnum text-default">
-              {{ formatPrice(previewTotal) }}
-            </span>
-          </div>
-        </form>
+              <UFormField :label="t('budget.items.toothNumber')">
+                <UInput
+                  v-model.number="form.tooth_number"
+                  type="number"
+                  min="11"
+                  max="85"
+                  :placeholder="t('budget.items.toothNumberPlaceholder')"
+                />
+              </UFormField>
+            </div>
+
+            <!-- Tooth surfaces -->
+            <UFormField
+              v-if="form.tooth_number"
+              :label="t('budget.items.surfaces')"
+            >
+              <div class="flex flex-wrap gap-2">
+                <UButton
+                  v-for="surface in toothSurfaces"
+                  :key="surface"
+                  size="sm"
+                  :variant="form.surfaces?.includes(surface) ? 'solid' : 'outline'"
+                  :color="form.surfaces?.includes(surface) ? 'primary' : 'neutral'"
+                  @click="toggleSurface(surface)"
+                >
+                  {{ surface }}
+                </UButton>
+              </div>
+            </UFormField>
+
+            <!-- Discount -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <UFormField :label="t('budget.discountType')">
+                <USelectMenu
+                  v-model="form.discount_type"
+                  :items="[
+                    { label: '-', value: '' },
+                    { label: t('budget.percentage'), value: 'percentage' },
+                    { label: t('budget.absolute'), value: 'absolute' }
+                  ]"
+                  value-key="value"
+                />
+              </UFormField>
+              <UFormField
+                v-if="form.discount_type"
+                :label="t('budget.discountValue')"
+              >
+                <UInput
+                  v-model.number="form.discount_value"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  :max="form.discount_type === 'percentage' ? 100 : undefined"
+                />
+              </UFormField>
+            </div>
+
+            <!-- Notes -->
+            <UFormField :label="t('budget.items.notes')">
+              <UTextarea
+                v-model="form.notes"
+                :placeholder="t('budget.items.notesPlaceholder')"
+                :rows="2"
+              />
+            </UFormField>
+
+            <!-- Preview total -->
+            <div
+              v-if="selectedItem"
+              class="flex justify-between items-center p-3 bg-surface-muted rounded-lg"
+            >
+              <span class="text-muted">{{ t('budget.items.lineTotal') }}</span>
+              <span class="text-h1 tnum text-default">
+                {{ formatPrice(previewTotal) }}
+              </span>
+            </div>
+          </form>
+        </div>
 
         <template #footer>
           <div class="flex justify-end gap-3">

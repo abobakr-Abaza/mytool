@@ -158,10 +158,16 @@ function closeModal() {
 <template>
   <UModal
     v-model:open="isOpen"
-    :ui="{ width: 'sm:max-w-lg' }"
   >
     <template #content>
-      <UCard>
+      <UCard
+        :ui="{
+          root: 'max-h-[90vh] flex flex-col',
+          header: 'shrink-0',
+          footer: 'shrink-0',
+          body: 'flex-1 min-h-0 overflow-hidden p-0'
+        }"
+      >
         <!-- Header -->
         <template #header>
           <div class="flex items-center justify-between">
@@ -192,7 +198,7 @@ function closeModal() {
         </template>
 
         <!-- Body -->
-        <div class="space-y-5">
+        <div class="h-full overflow-y-auto px-4 py-4 space-y-5">
           <form
             class="space-y-5"
             @submit.prevent="handleSubmit"

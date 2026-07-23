@@ -32,7 +32,7 @@ export default defineAppConfig({
     modal: {
       slots: {
         overlay: 'bg-[rgba(15,17,22,0.40)] dark:bg-[rgba(0,0,0,0.55)]',
-        content: 'bg-[var(--color-surface)] ring-1 ring-[var(--color-border)] shadow-[var(--shadow-lg)] rounded-[var(--radius-xl)]'
+        content: 'bg-[var(--color-surface)] ring-1 ring-[var(--color-border)] shadow-[var(--shadow-lg)] rounded-[var(--radius-xl)] flex flex-col max-h-[85vh] overflow-hidden'
       }
     },
     tabs: {
