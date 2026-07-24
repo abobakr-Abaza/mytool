@@ -1356,6 +1356,19 @@
       "cancel": "Cancel"
     }
   },
+  "payments": {
+    "methods": {
+      "cash": "Cash",
+      "card": "Card / Debit",
+      "bank_transfer": "Bank Transfer",
+      "direct_debit": "Direct Debit",
+      "instapay": "InstaPay",
+      "vodafone_cash": "Vodafone Cash",
+      "pos_card": "POS / Card",
+      "insurance": "Insurance",
+      "other": "Other"
+    }
+  },
   "validation": {
     "required": "This field is required",
     "email": "Enter a valid email",

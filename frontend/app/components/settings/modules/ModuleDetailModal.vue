@@ -75,7 +75,7 @@ function statusColor(status: string): UiColor {
 <template>
   <UModal
     :open="open"
-    :ui="{ content: 'sm:max-w-3xl' }"
+    :ui="{ content: 'sm:max-w-3xl max-h-[85vh] overflow-y-auto' }"
     @update:open="emit('update:open', $event)"
   >
     <template #content>

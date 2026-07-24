@@ -195,7 +195,7 @@ function isActive(to: string): boolean {
       :ui="{ content: 'w-72 max-w-[80vw] bg-surface-muted' }"
     >
       <template #content>
-        <div class="flex flex-col h-full">
+        <div class="flex flex-col h-full overflow-y-auto flex-1">
           <!-- Logo -->
           <div class="flex items-center justify-between h-14 px-4">
             <NuxtLink

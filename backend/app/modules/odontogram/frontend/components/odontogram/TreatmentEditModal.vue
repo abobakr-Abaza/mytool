@@ -116,6 +116,7 @@ function handleClose() {
 <template>
   <UModal
     :open="open"
+    :ui="{ content: 'max-h-[80vh] overflow-y-auto' }"
     @update:open="handleClose"
   >
     <template #content>
