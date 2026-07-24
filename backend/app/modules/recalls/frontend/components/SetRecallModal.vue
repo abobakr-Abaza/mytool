@@ -151,7 +151,7 @@ function close() {
     :open="open"
     :title="t('recalls.modal.title')"
     :description="t('recalls.modal.subtitle')"
-    :ui="{ content: 'sm:max-w-lg' }"
+    :ui="{ content: 'sm:max-w-lg max-h-[90vh] flex flex-col', body: { base: 'overflow-y-auto flex-1' }, footer: { base: 'shrink-0' } }"
     @update:open="(v: boolean) => emit('update:open', v)"
   >
     <template #body>

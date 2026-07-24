@@ -93,10 +93,11 @@ function handleConfirm() {
 <template>
   <UModal
     :open="open"
+    :ui="{ content: 'max-h-[90vh] flex flex-col' }"
     @update:open="emit('update:open', $event)"
   >
     <template #content>
-      <div class="p-6 space-y-4 max-w-md">
+      <div class="p-6 space-y-4 max-w-md overflow-y-auto">
         <h3 class="text-h1 text-default">
           {{ t(config.labelKey) }}
         </h3>

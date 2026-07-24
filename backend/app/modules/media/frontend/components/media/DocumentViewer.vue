@@ -71,14 +71,14 @@ onUnmounted(() => {
 <template>
   <UModal
     v-model:open="open"
-    :ui="{ content: 'sm:max-w-6xl' }"
+    :ui="{ content: 'sm:max-w-6xl max-h-[90vh] flex flex-col' }"
   >
     <template #content>
       <UCard
         :ui="{
-          root: 'w-full',
-          body: 'p-0',
-          header: 'py-3 px-4'
+          root: 'max-h-[90vh] flex flex-col w-full',
+          body: 'flex-1 min-h-0 overflow-y-auto p-0',
+          header: 'shrink-0 py-3 px-4'
         }"
       >
         <template #header>

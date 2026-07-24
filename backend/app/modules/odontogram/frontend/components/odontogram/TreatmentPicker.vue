@@ -140,6 +140,7 @@ function handleClose() {
 <template>
   <UModal
     :open="open"
+    :ui="{ content: 'max-h-[90vh] flex flex-col', body: { base: 'overflow-y-auto flex-1' }, footer: { base: 'shrink-0' }, header: { base: 'shrink-0' } }"
     @update:open="handleClose"
   >
     <template #header>

@@ -41,7 +41,7 @@ const reasonLabel = computed(() => {
 <template>
   <UModal :open="open" @update:open="(v) => emit('update:open', v)">
     <template #content>
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <h2 class="text-lg font-semibold">
             {{ t('treatmentPlans.modals.reactivate.title') }}

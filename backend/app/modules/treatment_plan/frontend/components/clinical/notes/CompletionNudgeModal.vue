@@ -71,10 +71,11 @@ watch(
 <template>
   <UModal
     :open="open"
+    :ui="{ content: 'max-h-[90vh] flex flex-col' }"
     @update:open="(v) => emit('update:open', v)"
   >
     <template #content>
-      <UCard>
+      <UCard :ui="{ root: 'flex-1 flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto p-0' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-[var(--color-success-soft)] flex items-center justify-center">
