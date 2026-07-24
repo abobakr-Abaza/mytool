@@ -70,8 +70,8 @@ export default defineNuxtConfig({
     // Server-side only (for SSR inside Docker)
     apiBaseUrlServer: process.env.API_BASE_URL_SERVER || 'http://backend:8000',
     public: {
-      // Client-side (browser)
-      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8000',
+      // Client-side (browser) — empty = same origin; dev proxy forwards to backend
+      apiBaseUrl: process.env.API_BASE_URL || '',
       demoMode: process.env.NUXT_PUBLIC_DEMO_MODE === 'true',
       // Documentation portal origin used by the in-app help drawer
       // (Fase 5 of issue #75). Empty disables the help button.
@@ -85,6 +85,15 @@ export default defineNuxtConfig({
   // boot, so a layer added after Nuxt started is invisible until
   // restart. Watching the file makes the round-trip automatic.
   watch: [modulesJsonPath],
+
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: process.env.API_PROXY_TARGET || 'http://backend:8000',
+        changeOrigin: true
+      }
+    }
+  },
 
   compatibilityDate: '2025-01-15',
 
