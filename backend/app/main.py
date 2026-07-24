@@ -92,16 +92,12 @@ app.add_middleware(SlowAPIMiddleware)
 app.middleware("http")(resolve_tenant_middleware)
 
 # Configure CORS
+# In development, accept any origin (covers localhost, codespaces, preview
+# deployments). Starlette echoes the specific origin back when credentials
+# are required, so we can safely use "*" here.
 allowed_origins = settings.allowed_origins_list.copy()
 if settings.ENVIRONMENT == "development":
-    allowed_origins.extend(
-        [
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            "http://localhost:3001",
-            "http://127.0.0.1:3001",
-        ]
-    )
+    allowed_origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
