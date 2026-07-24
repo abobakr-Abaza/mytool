@@ -1,6 +1,7 @@
 """FastAPI application entry point."""
 
 import logging
+import re
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Annotated
@@ -93,15 +94,16 @@ app.middleware("http")(resolve_tenant_middleware)
 
 # Configure CORS
 # In development, accept any origin (covers localhost, codespaces, preview
-# deployments). Starlette echoes the specific origin back when credentials
-# are required, so we can safely use "*" here.
+# deployments). Browsers require a concrete origin (not "*") for
+# credentialed requests (Authorization header), so we use a regex that
+# matches everything — Starlette echoes the specific origin back.
 allowed_origins = settings.allowed_origins_list.copy()
-if settings.ENVIRONMENT == "development":
-    allowed_origins = ["*"]
+origin_regex = r".*" if settings.ENVIRONMENT == "development" else None
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    allow_origin_regex=origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -140,6 +142,12 @@ def _cors_headers(request: Request) -> dict[str, str]:
     if not origin:
         return {}
     if origin in allowed_origins or "*" in allowed_origins:
+        return {
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Credentials": "true",
+            "Vary": "Origin",
+        }
+    if origin_regex and re.match(origin_regex, origin):
         return {
             "Access-Control-Allow-Origin": origin,
             "Access-Control-Allow-Credentials": "true",

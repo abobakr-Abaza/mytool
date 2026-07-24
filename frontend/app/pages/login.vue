@@ -1,6 +1,11 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'guest'
+  layout: 'guest',
+  // Client-only render — ensures @submit.prevent always hydrates
+  // before the user can interact with the form. SSR produces raw HTML
+  // without Vue event handlers, and a fast click can trigger a native
+  // form submission before hydration completes.
+  ssr: false
 })
 
 const { t } = useI18n()
