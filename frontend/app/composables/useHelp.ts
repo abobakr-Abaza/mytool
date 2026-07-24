@@ -63,7 +63,7 @@ export function useHelp() {
     routeToSlug(collapseDynamicSegments(route.path, matchedRoute.value))
   )
 
-  const lang = computed(() => (locale.value?.toLowerCase().startsWith('es') ? 'es' : 'en'))
+  const lang = computed(() => 'en')
 
   /** Iframe URL for the matching help fragment. Empty when the portal
    *  is not configured (NUXT_PUBLIC_DOCS_URL=''). */

@@ -121,17 +121,6 @@ export default defineNuxtPlugin(() => {
     searchKeywords: ['perfil', 'profile', 'cuenta', 'account'],
     order: 10
   })
-  registerSettingsPage({
-    path: 'language',
-    category: 'account',
-    labelKey: 'settings.language',
-    descriptionKey: 'settings.languageDescription',
-    icon: 'i-lucide-languages',
-    component: () => import('~/components/settings/pages/LanguagePage.vue'),
-    searchKeywords: ['idioma', 'language', 'locale', 'lang'],
-    order: 20
-  })
-
   // ---- Onboarding rules ---------------------------------------------
   // Rules read state lazily inside the predicate to stay reactive
   // across login transitions.

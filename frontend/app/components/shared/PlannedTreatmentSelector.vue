@@ -73,7 +73,7 @@ function getItemName(item: PlannedTreatmentItem): string {
   const catalog = getCatalog(item)
   const names = catalog?.names
   if (names) {
-    const name = names[locale.value] || names.es
+    const name = names[locale.value] || names.en
     if (name) return name
     if (catalog?.internal_code) return catalog.internal_code
   }

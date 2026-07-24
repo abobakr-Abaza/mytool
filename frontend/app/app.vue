@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { fr, es, en } from '@nuxt/ui/locale'
+import { en } from '@nuxt/ui/locale'
 
 const { t, locale } = useI18n()
 const { branding, fetchBranding } = useBranding()
 
-const nuxtUILocales: Record<string, typeof en> = { en, fr, es }
-const nuxtUILocale = computed(() => nuxtUILocales[locale.value] || en)
+const nuxtUILocale = computed(() => en)
 
 // Fetch branding on mount (public endpoint, no auth required)
 if (import.meta.client) {

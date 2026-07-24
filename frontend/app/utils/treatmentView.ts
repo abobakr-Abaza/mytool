@@ -60,7 +60,7 @@ export function getTreatmentDisplayName(
 ): string {
   const names = view.catalog_item?.names
   if (names) {
-    const name = names[locale] || names.es || names.en
+    const name = names[locale] || names.en
     if (name) return name
   }
   const key = `odontogram.treatments.types.${view.treatment_type}`
