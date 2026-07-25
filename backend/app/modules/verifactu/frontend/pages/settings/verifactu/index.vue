@@ -297,7 +297,7 @@ onMounted(refresh)
     <!-- ─── CONFIGURATION CARDS ─────────────────────────────────── -->
     <div v-if="!loading" class="grid gap-4 grid-cols-1 sm:grid-cols-2">
       <!-- Datos del emisor (read-only, edited from clinic settings) -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-building-2" class="text-primary-500" />
@@ -328,7 +328,7 @@ onMounted(refresh)
       </UCard>
 
       <!-- Certificado digital -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-key-round" class="text-primary-500" />
@@ -361,7 +361,7 @@ onMounted(refresh)
       </UCard>
 
       <!-- Productor del SIF -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-file-signature" class="text-primary-500" />
@@ -396,7 +396,7 @@ onMounted(refresh)
       </UCard>
 
       <!-- AEAT VAT classification mapping -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-percent" class="text-primary-500" />
@@ -419,7 +419,7 @@ onMounted(refresh)
       </UCard>
 
       <!-- Actividad (queue + records combined) -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-activity" class="text-primary-500" />
@@ -464,7 +464,7 @@ onMounted(refresh)
     <!-- ─── PROD CONFIRMATION MODAL ─────────────────────────────── -->
     <UModal v-model:open="showProdConfirm">
       <template #content>
-        <UCard>
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon name="i-lucide-alert-triangle" class="text-red-600 text-xl" />

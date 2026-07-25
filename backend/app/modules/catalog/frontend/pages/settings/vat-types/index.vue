@@ -188,7 +188,7 @@ function canEdit(_vatType: VatType): boolean {
     </div>
 
     <!-- VAT Types list -->
-    <UCard>
+    <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
       <div
         v-if="isLoading"
         class="space-y-3"
@@ -274,7 +274,7 @@ function canEdit(_vatType: VatType): boolean {
     <!-- Create Modal -->
     <UModal v-model:open="showCreateModal">
       <template #content>
-        <UCard>
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon
@@ -343,7 +343,7 @@ function canEdit(_vatType: VatType): boolean {
     <!-- Edit Modal -->
     <UModal v-model:open="showEditModal">
       <template #content>
-        <UCard>
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon
@@ -431,7 +431,7 @@ function canEdit(_vatType: VatType): boolean {
     <!-- Delete Confirmation Modal -->
     <UModal v-model:open="showDeleteModal">
       <template #content>
-        <UCard>
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon

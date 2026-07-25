@@ -220,17 +220,17 @@ function getSeriesTypeLabel(type: string): string {
 
     <!-- Loading skeleton -->
     <template v-if="isLoading">
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <USkeleton class="h-20 w-full" />
       </UCard>
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <USkeleton class="h-20 w-full" />
       </UCard>
     </template>
 
     <template v-else>
       <!-- Regular Invoices Section -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center justify-between">
             <h2 class="text-h1 text-default">
@@ -333,7 +333,7 @@ function getSeriesTypeLabel(type: string): string {
       </UCard>
 
       <!-- Credit Notes Section -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center justify-between">
             <h2 class="text-h1 text-default">
@@ -439,7 +439,7 @@ function getSeriesTypeLabel(type: string): string {
     <!-- Create Modal -->
     <UModal v-model:open="showCreateModal">
       <template #content>
-        <UCard>
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon
@@ -511,7 +511,7 @@ function getSeriesTypeLabel(type: string): string {
     <!-- Edit Modal -->
     <UModal v-model:open="showEditModal">
       <template #content>
-        <UCard>
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon
@@ -586,7 +586,7 @@ function getSeriesTypeLabel(type: string): string {
     <!-- Reset Counter Modal -->
     <UModal v-model:open="showResetModal">
       <template #content>
-        <UCard>
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon

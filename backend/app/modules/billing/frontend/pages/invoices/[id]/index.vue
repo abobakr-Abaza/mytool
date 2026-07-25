@@ -608,7 +608,7 @@ function goToCreditNoteFor() {
         <!-- Left column - Invoice details -->
         <div class="lg:col-span-2 space-y-6">
           <!-- Invoice info card -->
-          <UCard>
+          <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
             <template #header>
               <h3 class="font-semibold text-default">
                 {{ t('invoice.details') }}
@@ -712,7 +712,7 @@ function goToCreditNoteFor() {
           </UCard>
 
           <!-- Items card -->
-          <UCard>
+          <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
             <template #header>
               <h3 class="font-semibold text-default">
                 {{ t('invoice.items') }}
@@ -775,7 +775,7 @@ function goToCreditNoteFor() {
                ``invoice_payments`` table; the underlying Payment is in
                the payments module. Refunds happen via
                /api/v1/payments/{id}/refunds — not from this screen. -->
-          <UCard v-if="currentInvoice.invoice_payments && currentInvoice.invoice_payments.length > 0">
+          <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" v-if="currentInvoice.invoice_payments && currentInvoice.invoice_payments.length > 0">
             <template #header>
               <h3 class="font-semibold text-default">
                 {{ t('invoice.payments.title') }}
@@ -820,7 +820,7 @@ function goToCreditNoteFor() {
           />
 
           <!-- Notes card -->
-          <UCard v-if="currentInvoice.public_notes || currentInvoice.internal_notes">
+          <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" v-if="currentInvoice.public_notes || currentInvoice.internal_notes">
             <template #header>
               <h3 class="font-semibold text-default">
                 {{ t('invoice.notes') }}

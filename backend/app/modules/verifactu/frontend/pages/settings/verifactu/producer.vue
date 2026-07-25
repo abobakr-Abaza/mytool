@@ -219,7 +219,7 @@ onMounted(refresh)
 
     <template v-else>
       <!-- ─── STEP 1 — Producer identity ─────────────────────────── -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center gap-3">
             <span class="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 font-semibold text-sm">1</span>
@@ -283,7 +283,7 @@ onMounted(refresh)
       </UCard>
 
       <!-- ─── STEP 2 — Read & sign declaration ────────────────────── -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center justify-between gap-3 flex-wrap">
             <div class="flex items-center gap-3">
@@ -371,7 +371,7 @@ onMounted(refresh)
       </UCard>
 
       <!-- ─── STEP 3 — Download signed PDF ────────────────────────── -->
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <div class="flex items-center gap-3">
             <span class="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 font-semibold text-sm">3</span>
@@ -401,7 +401,7 @@ onMounted(refresh)
     <!-- Revoke signature confirmation modal -->
     <UModal v-model:open="showRevokeConfirm">
       <template #content>
-        <UCard>
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon name="i-lucide-alert-triangle" class="text-amber-600 text-xl" />

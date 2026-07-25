@@ -171,7 +171,7 @@ onMounted(async () => {
 
 <template>
   <div>
-    <UCard v-if="isAdmin" class="mb-4">
+    <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" v-if="isAdmin" class="mb-4">
       <UFormField :label="t('schedules.professionalHours.selectProfessional')">
         <USelect
           v-model="selectedProfessional"
@@ -184,7 +184,7 @@ onMounted(async () => {
     <USkeleton v-if="isLoading" class="h-40 w-full" />
 
     <div v-else-if="selectedProfessional" class="space-y-6">
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <template #header>
           <h2 class="text-lg font-semibold">
             {{ t('schedules.professionalHours.weeklyTemplate') }}
@@ -207,7 +207,7 @@ onMounted(async () => {
         </template>
       </UCard>
 
-      <UCard>
+      <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
         <OverrideCalendar
           :overrides="overrides"
           :can-write="canWrite"
