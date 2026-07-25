@@ -1,0 +1,35 @@
+services:
+  # 1. Nuxt Frontend (Auto-built on git push)
+  - type: web
+    name: laminardent-frontend
+    runtime: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: node .output/server/index.mjs
+    envVars:
+      - key: NUXT_PUBLIC_API_BASE
+        fromService:
+          type: web
+          name: laminardent-backend
+          property: url
+
+  # 2. FastAPI Backend (Auto-built on git push)
+  - type: web
+    name: laminardent-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: laminardent-db
+          property: connectionString
+
+databases:
+  # 3. PostgreSQL Database (Auto-provisioned)
+  - name: laminardent-db
+    databaseName: laminardent
+    user: postgres
