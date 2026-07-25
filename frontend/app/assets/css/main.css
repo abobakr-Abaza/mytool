@@ -321,4 +321,8 @@ body {
   z-index: 9999 !important;
 }
 
+[data-slot="content"] {
+  overflow-y: auto !important;
+}
+
 
