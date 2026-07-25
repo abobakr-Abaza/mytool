@@ -616,6 +616,7 @@ function openPatientFile() {
   <UModal
     :open="open"
     :fullscreen="isMobile"
+    :ui="{ content: 'overflow-y-auto' }"
     @update:open="$emit('update:open', $event)"
   >
     <template #content>

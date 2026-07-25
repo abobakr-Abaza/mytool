@@ -123,7 +123,7 @@ const submitText = computed(() => props.submitLabel ?? t('shared.collect.submit'
     :title="title"
     :description="subtitle"
     :ui="{
-      content: 'max-h-[90vh] flex flex-col',
+      content: 'max-h-[90vh] flex flex-col overflow-y-auto',
       body: 'overflow-y-auto'
     }"
     @update:open="emit('update:open', $event)"

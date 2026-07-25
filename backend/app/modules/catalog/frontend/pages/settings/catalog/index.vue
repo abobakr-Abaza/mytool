@@ -618,7 +618,7 @@ const categoryOptions = computed(() => [
     />
 
     <!-- Delete Confirmation Modal -->
-    <UModal v-model:open="showDeleteConfirm">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showDeleteConfirm">
       <template #content>
         <div class="bg-surface rounded-lg shadow-xl p-6 max-w-md">
           <div class="flex items-start gap-4">

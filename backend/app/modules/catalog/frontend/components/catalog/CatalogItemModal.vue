@@ -347,7 +347,7 @@ function handleClose() {
 <template>
   <UModal
     v-model:open="open"
-    :ui="{ content: '!max-w-3xl' }"
+    :ui="{ content: '!max-w-3xl overflow-y-auto' }"
   >
     <template #content>
       <div class="bg-surface rounded-lg w-full max-h-[92vh] flex flex-col">

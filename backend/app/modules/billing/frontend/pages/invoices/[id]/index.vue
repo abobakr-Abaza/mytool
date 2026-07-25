@@ -865,7 +865,7 @@ function goToCreditNoteFor() {
     </template>
 
     <!-- Issue confirmation modal -->
-    <UModal
+    <UModal :ui="{ content: 'overflow-y-auto' }"
       v-model:open="showIssueConfirm"
       :title="t('invoice.actions.issue')"
     >
@@ -926,7 +926,7 @@ function goToCreditNoteFor() {
     />
 
     <!-- Credit Note Modal -->
-    <UModal
+    <UModal :ui="{ content: 'overflow-y-auto' }"
       v-model:open="showCreditNoteModal"
       :title="t('invoice.createCreditNote')"
     >
@@ -966,7 +966,7 @@ function goToCreditNoteFor() {
     </UModal>
 
     <!-- Send Invoice Modal -->
-    <UModal
+    <UModal :ui="{ content: 'overflow-y-auto' }"
       v-model:open="showSendModal"
       :title="t('invoice.send.title')"
     >

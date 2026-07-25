@@ -191,7 +191,7 @@ function confirmDiscard() {
     </div>
 
     <!-- Close-session confirmation modal -->
-    <UModal
+    <UModal :ui="{ content: 'overflow-y-auto' }"
       :open="showClose"
       :title="t('periodontogram.session.closeTitle')"
       @update:open="(v) => { showClose = v }"
@@ -223,7 +223,7 @@ function confirmDiscard() {
     </UModal>
 
     <!-- Discard-draft confirmation modal -->
-    <UModal
+    <UModal :ui="{ content: 'overflow-y-auto' }"
       :open="showDiscard"
       :title="t('periodontogram.session.discardTitle')"
       @update:open="(v) => { showDiscard = v }"

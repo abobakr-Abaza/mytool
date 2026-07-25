@@ -219,7 +219,7 @@ onMounted(async () => {
       </UCard>
     </div>
 
-    <UModal v-model:open="showOverrideModal">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showOverrideModal">
       <template #content>
         <div class="p-6 space-y-4">
           <h3 class="text-lg font-semibold">

@@ -462,7 +462,7 @@ onMounted(refresh)
     </div>
 
     <!-- ─── PROD CONFIRMATION MODAL ─────────────────────────────── -->
-    <UModal v-model:open="showProdConfirm">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showProdConfirm">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>

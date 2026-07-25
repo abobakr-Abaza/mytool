@@ -93,7 +93,7 @@ function handleConfirm() {
 <template>
   <UModal
     :open="open"
-    :ui="{ content: 'max-h-[90vh] flex flex-col' }"
+    :ui="{ content: 'max-h-[90vh] flex flex-col overflow-y-auto' }"
     @update:open="emit('update:open', $event)"
   >
     <template #content>

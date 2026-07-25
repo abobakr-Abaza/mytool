@@ -242,7 +242,7 @@ const canSave = computed(() => {
 </script>
 
 <template>
-  <UModal
+  <UModal :ui="{ content: 'overflow-y-auto' }"
     :open="open"
     @update:open="emit('update:open', $event)"
   >

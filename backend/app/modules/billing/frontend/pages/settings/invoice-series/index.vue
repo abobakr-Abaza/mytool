@@ -437,7 +437,7 @@ function getSeriesTypeLabel(type: string): string {
     </template>
 
     <!-- Create Modal -->
-    <UModal v-model:open="showCreateModal">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showCreateModal">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
@@ -509,7 +509,7 @@ function getSeriesTypeLabel(type: string): string {
     </UModal>
 
     <!-- Edit Modal -->
-    <UModal v-model:open="showEditModal">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showEditModal">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
@@ -584,7 +584,7 @@ function getSeriesTypeLabel(type: string): string {
     </UModal>
 
     <!-- Reset Counter Modal -->
-    <UModal v-model:open="showResetModal">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showResetModal">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>

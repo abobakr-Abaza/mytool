@@ -149,7 +149,7 @@ function handleUploaded() {
     <!-- Upload modal -->
     <UModal
       v-model:open="showUpload"
-      :ui="{ content: 'sm:max-w-2xl' }"
+      :ui="{ content: 'sm:max-w-2xl overflow-y-auto' }"
     >
       <template #content>
         <div class="bg-default rounded-lg overflow-hidden">

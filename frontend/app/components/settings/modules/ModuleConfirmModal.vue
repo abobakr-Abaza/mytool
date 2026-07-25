@@ -95,7 +95,7 @@ function onConfirm() {
   <UModal
     :open="open"
     :dismissible="!loading"
-    :ui="{ body: { base: 'overflow-y-auto max-h-[75vh] flex-1' } }"
+    :ui="{ content: 'overflow-y-auto', body: { base: 'overflow-y-auto max-h-[75vh] flex-1' } }"
     @update:open="emit('update:open', $event)"
   >
     <template #content>

@@ -86,7 +86,7 @@ async function submit() {
   <UModal
     :open="open"
     :title="t('payments.patientPanel.refundModal.title')"
-    :ui="{ content: 'max-h-[90vh] flex flex-col', body: { base: 'overflow-y-auto flex-1' }, footer: { base: 'shrink-0' } }"
+    :ui="{ content: 'max-h-[90vh] flex flex-col overflow-y-auto', body: { base: 'overflow-y-auto flex-1' }, footer: { base: 'shrink-0' } }"
     @update:open="emit('update:open', $event)"
   >
     <template #body>

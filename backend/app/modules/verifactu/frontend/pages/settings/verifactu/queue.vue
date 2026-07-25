@@ -256,7 +256,7 @@ onMounted(refresh)
       </li>
     </ul>
 
-    <UModal
+    <UModal :ui="{ content: 'overflow-y-auto' }"
       v-model:open="historyOpen"
       :title="`${t('verifactu.queue.history.title')} — ${historyTitle}`"
     >

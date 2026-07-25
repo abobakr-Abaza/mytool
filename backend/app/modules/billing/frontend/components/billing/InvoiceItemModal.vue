@@ -243,7 +243,7 @@ watch(open, async (isOpen) => {
 </script>
 
 <template>
-  <UModal v-model:open="open">
+  <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="open">
     <template #content>
       <UCard
         class="w-full max-w-lg"

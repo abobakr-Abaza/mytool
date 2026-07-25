@@ -98,7 +98,7 @@ function categoryLabel(catId: string): string {
       </kbd>
     </button>
 
-    <UModal v-model:open="isOpen">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="isOpen">
       <template #content>
         <div class="bg-(--color-surface) rounded-[var(--radius-lg)] overflow-hidden">
           <div class="flex items-center gap-2 px-4 py-3 border-b border-[var(--color-border)]">

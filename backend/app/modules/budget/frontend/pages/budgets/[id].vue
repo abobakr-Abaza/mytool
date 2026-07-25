@@ -802,7 +802,7 @@ function getItemName(item: BudgetItem): string {
     />
 
     <!-- Send Modal -->
-    <UModal v-model:open="isSendModalOpen">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="isSendModalOpen">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
@@ -888,7 +888,7 @@ function getItemName(item: BudgetItem): string {
     </UModal>
 
     <!-- Signature Modal -->
-    <UModal v-model:open="isSignatureModalOpen">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="isSignatureModalOpen">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
@@ -963,7 +963,7 @@ function getItemName(item: BudgetItem): string {
     </UModal>
 
     <!-- View signature modal -->
-    <UModal v-model:open="isSignatureViewModalOpen">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="isSignatureViewModalOpen">
       <template #content>
         <div class="p-1">
           <BudgetSignatureCard
@@ -977,7 +977,7 @@ function getItemName(item: BudgetItem): string {
     </UModal>
 
     <!-- Share public link modal -->
-    <UModal v-model:open="isShareLinkModalOpen">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="isShareLinkModalOpen">
       <template #content>
         <div class="p-1">
           <PublicBudgetLinkCard

@@ -105,7 +105,7 @@ const confirmMessage = computed(() => {
     />
   </UDropdownMenu>
 
-  <UModal
+  <UModal :ui="{ content: 'overflow-y-auto' }"
     :open="!!pendingDescriptor"
     :title="t('appointments.confirmTransitionTitle')"
     @update:open="(v: boolean) => { if (!v) cancelPending() }"

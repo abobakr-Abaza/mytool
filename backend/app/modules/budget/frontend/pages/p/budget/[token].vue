@@ -526,7 +526,7 @@ const greeting = computed(() => {
     </template>
 
     <!-- Accept modal -->
-    <UModal v-model:open="showAccept">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showAccept">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
@@ -588,7 +588,7 @@ const greeting = computed(() => {
     </UModal>
 
     <!-- Reject modal -->
-    <UModal v-model:open="showReject">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showReject">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>

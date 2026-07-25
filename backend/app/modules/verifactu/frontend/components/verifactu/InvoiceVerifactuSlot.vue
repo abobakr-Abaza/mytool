@@ -217,7 +217,7 @@ function goToClinic() {
 
     <InvoiceVerifactuPanel :compliance-data="complianceData" />
 
-    <UModal v-model:open="editOpen" :title="t('verifactu.billingParty.modalTitle')">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="editOpen" :title="t('verifactu.billingParty.modalTitle')">
       <template #body>
         <p class="text-sm text-gray-600 mb-3">{{ t('verifactu.billingParty.intro') }}</p>
         <div class="space-y-3">

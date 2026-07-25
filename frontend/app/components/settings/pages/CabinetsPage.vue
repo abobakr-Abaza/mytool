@@ -154,7 +154,7 @@ async function handleDelete() {
     </div>
 
     <!-- Create modal -->
-    <UModal v-model:open="showCreate">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showCreate">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto' }">
           <template #header>
@@ -214,7 +214,7 @@ async function handleDelete() {
     </UModal>
 
     <!-- Edit modal -->
-    <UModal v-model:open="showEdit">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showEdit">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto' }">
           <template #header>
@@ -274,7 +274,7 @@ async function handleDelete() {
     </UModal>
 
     <!-- Delete modal -->
-    <UModal v-model:open="showDelete">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showDelete">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>

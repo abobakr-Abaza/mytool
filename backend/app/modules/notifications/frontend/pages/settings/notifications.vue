@@ -469,7 +469,7 @@ if (!isAdmin.value) {
     </template>
 
     <!-- Test Email Modal -->
-    <UModal v-model:open="showTestEmailModal">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showTestEmailModal">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
@@ -522,7 +522,7 @@ if (!isAdmin.value) {
     <!-- SMTP Configuration Modal -->
     <UModal
       v-model:open="showSmtpModal"
-      :ui="{ width: 'max-w-2xl' }"
+      :ui="{ width: 'max-w-2xl', content: 'overflow-y-auto' }"
     >
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">

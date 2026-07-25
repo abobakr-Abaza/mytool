@@ -164,7 +164,7 @@ watch(() => props.open, async (isOpen) => {
 </script>
 
 <template>
-  <UModal
+  <UModal :ui="{ content: 'overflow-y-auto' }"
     :open="open"
     @update:open="emit('update:open', $event)"
   >

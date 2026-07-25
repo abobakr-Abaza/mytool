@@ -24,7 +24,7 @@ const shouldRender = computed(() => open.value && entries.value.length > 0)
 </script>
 
 <template>
-  <UModal
+  <UModal :ui="{ content: 'overflow-y-auto' }"
     :open="shouldRender"
     :title="t('appointments.followup.title')"
     @update:open="(v: boolean) => { if (!v) dismiss() }"

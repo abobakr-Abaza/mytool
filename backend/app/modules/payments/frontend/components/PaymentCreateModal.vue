@@ -238,7 +238,7 @@ function handleKeydown(e: KeyboardEvent) {
     :open="open"
     :title="t('payments.new.title')"
     :ui="{
-      content: '!max-h-[90vh] flex flex-col',
+      content: '!max-h-[90vh] flex flex-col overflow-y-auto',
       body: 'flex-1 min-h-0 overflow-y-auto',
       footer: 'shrink-0'
     }"

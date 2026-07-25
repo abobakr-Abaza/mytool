@@ -236,7 +236,7 @@ const totalPages = computed(() => Math.ceil(total.value / pageSize))
     <!-- Upload Modal -->
     <UModal
       v-model:open="showUploadModal"
-      :ui="{ content: 'sm:max-w-2xl' }"
+      :ui="{ content: 'sm:max-w-2xl overflow-y-auto' }"
     >
       <template #content>
         <div class="bg-default rounded-lg overflow-hidden">
@@ -274,7 +274,7 @@ const totalPages = computed(() => Math.ceil(total.value / pageSize))
     </UModal>
 
     <!-- Delete Confirmation -->
-    <UModal v-model:open="showDeleteConfirm">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showDeleteConfirm">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
@@ -312,7 +312,7 @@ const totalPages = computed(() => Math.ceil(total.value / pageSize))
     </UModal>
 
     <!-- Edit Modal -->
-    <UModal v-model:open="showEditModal">
+    <UModal :ui="{ content: 'overflow-y-auto' }" v-model:open="showEditModal">
       <template #content>
         <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>

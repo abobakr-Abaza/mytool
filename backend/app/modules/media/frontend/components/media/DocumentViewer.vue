@@ -71,7 +71,7 @@ onUnmounted(() => {
 <template>
   <UModal
     v-model:open="open"
-    :ui="{ content: 'sm:max-w-6xl max-h-[90vh] flex flex-col' }"
+    :ui="{ content: 'sm:max-w-6xl max-h-[90vh] flex flex-col overflow-y-auto' }"
   >
     <template #content>
       <UCard

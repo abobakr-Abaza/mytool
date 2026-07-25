@@ -228,7 +228,7 @@ async function onAttemptLogged() {
       </UDropdownMenu>
     </div>
 
-    <UModal
+    <UModal :ui="{ content: 'overflow-y-auto' }"
       :open="logOpen"
       :title="t('recalls.actions.logAttempt')"
       @update:open="(v: boolean) => { logOpen = v }"
@@ -244,7 +244,7 @@ async function onAttemptLogged() {
       </template>
     </UModal>
 
-    <UModal
+    <UModal :ui="{ content: 'overflow-y-auto' }"
       :open="snoozeOpen"
       :title="t('recalls.snoozePrompt')"
       @update:open="(v: boolean) => { snoozeOpen = v }"
