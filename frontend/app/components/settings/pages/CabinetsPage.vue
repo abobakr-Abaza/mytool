@@ -156,7 +156,7 @@ async function handleDelete() {
     <!-- Create modal -->
     <UModal v-model:open="showCreate">
       <template #content>
-        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' } }">
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto' }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon
@@ -216,7 +216,7 @@ async function handleDelete() {
     <!-- Edit modal -->
     <UModal v-model:open="showEdit">
       <template #content>
-        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' } }">
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto' }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon
@@ -276,7 +276,7 @@ async function handleDelete() {
     <!-- Delete modal -->
     <UModal v-model:open="showDelete">
       <template #content>
-        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
             <div class="flex items-center gap-2">
               <UIcon

@@ -276,7 +276,7 @@ const totalPages = computed(() => Math.ceil(total.value / pageSize))
     <!-- Delete Confirmation -->
     <UModal v-model:open="showDeleteConfirm">
       <template #content>
-        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
             <h3 class="font-semibold text-danger-accent">
               {{ t('documents.deleteConfirm.title', 'Delete Document') }}
@@ -314,7 +314,7 @@ const totalPages = computed(() => Math.ceil(total.value / pageSize))
     <!-- Edit Modal -->
     <UModal v-model:open="showEditModal">
       <template #content>
-        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
+        <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
           <template #header>
             <h3 class="font-semibold">
               {{ t('documents.edit', 'Edit Document') }}

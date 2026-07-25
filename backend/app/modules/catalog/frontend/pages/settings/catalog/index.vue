@@ -230,7 +230,7 @@ const categoryOptions = computed(() => [
     </div>
 
     <!-- Filters -->
-    <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }">
+    <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }">
       <div class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
           <UInput
@@ -442,7 +442,7 @@ const categoryOptions = computed(() => [
     </div>
 
     <!-- Items list - Flat View (when category is filtered) -->
-    <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: { base: 'flex-1 min-h-0 overflow-y-auto' }, footer: { base: 'shrink-0' } }" v-else>
+    <UCard :ui="{ root: 'max-h-[90vh] flex flex-col', header: { base: 'shrink-0' }, body: 'flex-1 min-h-0 overflow-y-auto', footer: { base: 'shrink-0' } }" v-else>
       <template #header>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
