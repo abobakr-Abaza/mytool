@@ -1,4 +1,4 @@
-from app.core.tools import Tool
+from app.core.agents.tools import Tool
 
 from .service import InventoryItemService
 
