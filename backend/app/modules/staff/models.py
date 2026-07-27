@@ -84,45 +84,6 @@ class Expense(Base, TimestampMixin):
     creator: Mapped[StaffProfile] = relationship(foreign_keys=[created_by])
 
 
-class GrossRevenue(Base, TimestampMixin):
-    __tablename__ = "staff_gross_revenues"
-
-    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    amount: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
-    source: Mapped[str] = mapped_column(String(100), nullable=False)
-    date: Mapped[date] = mapped_column(DateTime(timezone=True), nullable=False)
-    created_by: Mapped[UUID] = mapped_column(ForeignKey("staff_profiles.id"), nullable=False)
-
-    creator: Mapped[StaffProfile] = relationship(foreign_keys=[created_by])
-
-
-class ProfitShare(Base, TimestampMixin):
-    __tablename__ = "staff_profit_shares"
-
-    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    staff_id: Mapped[UUID] = mapped_column(ForeignKey("staff_profiles.id"), index=True, nullable=False)
-    share_percentage: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False)
-    vesting_status: Mapped[str] = mapped_column(String(20), nullable=False, default="LOCKED")
-    vesting_condition: Mapped[str | None] = mapped_column(Text)
-
-    staff: Mapped[StaffProfile] = relationship(foreign_keys=[staff_id])
-
-
-class PayoutLedger(Base, TimestampMixin):
-    __tablename__ = "staff_payout_ledger"
-
-    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    staff_id: Mapped[UUID] = mapped_column(ForeignKey("staff_profiles.id"), index=True, nullable=False)
-    amount_paid: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
-    period_start: Mapped[date] = mapped_column(DateTime(timezone=True), nullable=False)
-    period_end: Mapped[date] = mapped_column(DateTime(timezone=True), nullable=False)
-    paid_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    paid_by: Mapped[UUID] = mapped_column(ForeignKey("staff_profiles.id"), nullable=False)
-
-    staff: Mapped[StaffProfile] = relationship(foreign_keys=[staff_id])
-    payer: Mapped[StaffProfile] = relationship(foreign_keys=[paid_by])
-
-
 class AuditLog(Base, TimestampMixin):
     __tablename__ = "staff_audit_logs"
 

@@ -14,9 +14,6 @@ from .models import (
     ChatMessage,
     ChatUnreadStatus,
     Expense,
-    GrossRevenue,
-    PayoutLedger,
-    ProfitShare,
     Sprint,
     StaffProfile,
     Task,
@@ -46,13 +43,13 @@ class StaffModule(BaseModule):
     }
 
     def get_models(self) -> list:
-        return [StaffProfile, Sprint, Task, TaskStatusLog, Expense, GrossRevenue, ProfitShare, PayoutLedger, AuditLog, ChatMessage, ChatUnreadStatus]
+        return [StaffProfile, Sprint, Task, TaskStatusLog, Expense, AuditLog, ChatMessage, ChatUnreadStatus]
 
     def get_router(self) -> APIRouter:
         return router
 
     def get_permissions(self) -> list[str]:
-        return ["staff.read", "staff.write", "tasks.read", "tasks.write", "tasks.own", "finance.read", "finance.write", "finance.own", "audit.read"]
+        return ["staff.read", "staff.write", "tasks.read", "tasks.write", "tasks.own", "finance.read", "finance.write", "audit.read"]
 
     def get_tools(self) -> list:
         from . import tools

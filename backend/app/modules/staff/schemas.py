@@ -179,98 +179,13 @@ class ExpenseResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-# --- Gross Revenue ---------------------------------------------------------
-
-
-class GrossRevenueCreate(BaseModel):
-    amount: Decimal = Field(gt=Decimal("0"), decimal_places=2)
-    source: str = Field(min_length=1, max_length=100)
-    date: datetime
-
-
-class GrossRevenueResponse(BaseModel):
-    id: UUID
-    amount: Decimal
-    source: str
-    date: datetime
-    created_by: UUID
-    created_at: datetime
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-# --- Profit Share ----------------------------------------------------------
-
-
-class ProfitShareCreate(BaseModel):
-    staff_id: UUID
-    share_percentage: Decimal = Field(gt=Decimal("0"), le=Decimal("100"), decimal_places=2)
-    vesting_status: str = Field(default="LOCKED", pattern=r"^(LOCKED|ACTIVE)$")
-    vesting_condition: str | None = None
-
-
-class ProfitShareUpdate(BaseModel):
-    share_percentage: Decimal | None = Field(default=None, gt=Decimal("0"), le=Decimal("100"), decimal_places=2)
-    vesting_condition: str | None = None
-
-
-class VestingUpdate(BaseModel):
-    vesting_status: str = Field(pattern=r"^(LOCKED|ACTIVE)$")
-
-
-class ProfitShareResponse(BaseModel):
-    id: UUID
-    staff_id: UUID
-    share_percentage: Decimal
-    vesting_status: str
-    vesting_condition: str | None
-    created_at: datetime
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-# --- Payout Ledger ---------------------------------------------------------
-
-
-class PayoutCreate(BaseModel):
-    staff_id: UUID
-    amount_paid: Decimal = Field(gt=Decimal("0"), decimal_places=2)
-    period_start: datetime
-    period_end: datetime
-
-
-class PayoutResponse(BaseModel):
-    id: UUID
-    staff_id: UUID
-    amount_paid: Decimal
-    period_start: datetime
-    period_end: datetime
-    paid_at: datetime
-    paid_by: UUID
-
-    model_config = ConfigDict(from_attributes=True)
-
-
 # --- Financial Summary -----------------------------------------------------
 
 
-class FinancialSummaryResponse(BaseModel):
-    total_gross_revenue: Decimal
+class SimpleFinancialSummary(BaseModel):
     total_expenses: Decimal
-    net_profit: Decimal
     period_start: datetime | None = None
     period_end: datetime | None = None
-
-
-class StaffEarningsResponse(BaseModel):
-    staff_id: UUID
-    staff_name: str
-    share_percentage: Decimal
-    vesting_status: str
-    net_profit: Decimal
-    gross_earnings: Decimal
-    total_paid: Decimal
-    unpaid_balance: Decimal
 
 
 # --- Audit Log -------------------------------------------------------------

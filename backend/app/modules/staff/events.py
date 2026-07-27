@@ -17,7 +17,3 @@ SPRINT_CREATED = "sprint.created"
 SPRINT_STATUS_CHANGED = "sprint.status_changed"
 
 EXPENSE_CREATED = "expense.created"
-REVENUE_CREATED = "revenue.created"
-PROFIT_SHARE_CREATED = "profit_share.created"
-PROFIT_SHARE_VESTED = "profit_share.vested"
-PAYOUT_CREATED = "payout.created"

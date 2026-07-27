@@ -1,4 +1,4 @@
-"""Business logic for staff, sprint/task, and financial operations."""
+"""Business logic for staff, sprint/task, and expense operations."""
 
 from __future__ import annotations
 
@@ -15,10 +15,6 @@ from app.core.events import event_bus
 
 from .events import (
     EXPENSE_CREATED,
-    PAYOUT_CREATED,
-    PROFIT_SHARE_CREATED,
-    PROFIT_SHARE_VESTED,
-    REVENUE_CREATED,
     SPRINT_CREATED,
     SPRINT_STATUS_CHANGED,
     STAFF_CREATED,
@@ -33,9 +29,6 @@ from .models import (
     ChatMessage,
     ChatUnreadStatus,
     Expense,
-    GrossRevenue,
-    PayoutLedger,
-    ProfitShare,
     Sprint,
     StaffProfile,
     Task,
@@ -283,14 +276,12 @@ class TaskService:
 
 
 # ---------------------------------------------------------------------------
-# FinanceService
+# FinanceService — simplified to expense-only
 # ---------------------------------------------------------------------------
 
 
 class FinanceService:
-    """Expenses, revenue, profit-share, and payout calculation engine."""
-
-    # --- Expenses ----------------------------------------------------------
+    """Simple expense tracking."""
 
     @staticmethod
     async def list_expenses(db: AsyncSession) -> list[Expense]:
@@ -317,173 +308,6 @@ class FinanceService:
     async def get_expense(db: AsyncSession, expense_id: UUID) -> Expense | None:
         result = await db.execute(select(Expense).where(Expense.id == expense_id))
         return result.scalar_one_or_none()
-
-    # --- Gross Revenue -----------------------------------------------------
-
-    @staticmethod
-    async def list_revenue(db: AsyncSession) -> list[GrossRevenue]:
-        result = await db.execute(select(GrossRevenue).order_by(GrossRevenue.date.desc()))
-        return list(result.scalars().all())
-
-    @staticmethod
-    async def create_revenue(db: AsyncSession, data: dict, actor_id: UUID) -> GrossRevenue:
-        revenue = GrossRevenue(created_by=actor_id, **data)
-        db.add(revenue)
-        await db.flush()
-        await _record_audit(db, actor_id, "revenue.created", {
-            "revenue_id": str(revenue.id), "amount": str(revenue.amount), "source": revenue.source,
-        })
-        await event_bus.publish(REVENUE_CREATED, {"revenue_id": str(revenue.id), "amount": str(revenue.amount)})
-        return revenue
-
-    # --- Profit Share ------------------------------------------------------
-
-    @staticmethod
-    async def list_profit_shares(db: AsyncSession) -> list[ProfitShare]:
-        result = await db.execute(select(ProfitShare).order_by(ProfitShare.created_at.desc()))
-        return list(result.scalars().all())
-
-    @staticmethod
-    async def create_profit_share(db: AsyncSession, data: dict, actor_id: UUID) -> ProfitShare:
-        ps = ProfitShare(**data)
-        db.add(ps)
-        await db.flush()
-        await _record_audit(db, actor_id, "profit_share.created", {
-            "profit_share_id": str(ps.id), "staff_id": str(ps.staff_id),
-            "share_percentage": str(ps.share_percentage),
-        })
-        await event_bus.publish(PROFIT_SHARE_CREATED, {
-            "profit_share_id": str(ps.id), "staff_id": str(ps.staff_id),
-        })
-        return ps
-
-    @staticmethod
-    async def update_vesting(db: AsyncSession, ps: ProfitShare, vesting_status: str, actor_id: UUID) -> ProfitShare:
-        old_status = ps.vesting_status
-        ps.vesting_status = vesting_status
-        await db.flush()
-        await _record_audit(db, actor_id, "profit_share.vesting_changed", {
-            "profit_share_id": str(ps.id), "from": old_status, "to": vesting_status,
-        })
-        await event_bus.publish(PROFIT_SHARE_VESTED, {
-            "profit_share_id": str(ps.id), "staff_id": str(ps.staff_id), "status": vesting_status,
-        })
-        return ps
-
-    @staticmethod
-    async def get_profit_share(db: AsyncSession, ps_id: UUID) -> ProfitShare | None:
-        result = await db.execute(select(ProfitShare).where(ProfitShare.id == ps_id))
-        return result.scalar_one_or_none()
-
-    # --- Payout Ledger -----------------------------------------------------
-
-    @staticmethod
-    async def list_payouts(db: AsyncSession) -> list[PayoutLedger]:
-        result = await db.execute(select(PayoutLedger).order_by(PayoutLedger.paid_at.desc()))
-        return list(result.scalars().all())
-
-    @staticmethod
-    async def create_payout(db: AsyncSession, data: dict, actor_id: UUID) -> PayoutLedger:
-        payout = PayoutLedger(paid_by=actor_id, **data)
-        db.add(payout)
-        await db.flush()
-        await _record_audit(db, actor_id, "payout.created", {
-            "payout_id": str(payout.id), "staff_id": str(payout.staff_id),
-            "amount_paid": str(payout.amount_paid),
-        })
-        await event_bus.publish(PAYOUT_CREATED, {
-            "payout_id": str(payout.id), "staff_id": str(payout.staff_id),
-            "amount": str(payout.amount_paid),
-        })
-        return payout
-
-    @staticmethod
-    async def get_payout(db: AsyncSession, payout_id: UUID) -> PayoutLedger | None:
-        result = await db.execute(select(PayoutLedger).where(PayoutLedger.id == payout_id))
-        return result.scalar_one_or_none()
-
-    # --- Financial Calculation Engine --------------------------------------
-
-    @staticmethod
-    async def get_summary(
-        db: AsyncSession,
-        period_start: datetime | None = None,
-        period_end: datetime | None = None,
-    ) -> dict:
-        """Calculate net profit = gross revenue - total expenses."""
-        rev_cond = [True]
-        exp_cond = [True]
-        if period_start:
-            rev_cond.append(GrossRevenue.date >= period_start)
-            exp_cond.append(Expense.date >= period_start)
-        if period_end:
-            rev_cond.append(GrossRevenue.date <= period_end)
-            exp_cond.append(Expense.date <= period_end)
-
-        total_revenue = (
-            await db.execute(select(func.coalesce(func.sum(GrossRevenue.amount), 0)).where(*rev_cond))
-        ).scalar() or Decimal("0")
-
-        total_expenses = (
-            await db.execute(select(func.coalesce(func.sum(Expense.amount), 0)).where(*exp_cond))
-        ).scalar() or Decimal("0")
-
-        net_profit = total_revenue - total_expenses
-
-        return {
-            "total_gross_revenue": total_revenue,
-            "total_expenses": total_expenses,
-            "net_profit": net_profit,
-            "period_start": period_start,
-            "period_end": period_end,
-        }
-
-    @staticmethod
-    async def get_staff_earnings(
-        db: AsyncSession,
-        staff_id: UUID,
-        period_start: datetime | None = None,
-        period_end: datetime | None = None,
-    ) -> dict:
-        """Calculate earnings for a single staff member."""
-        profile = await db.get(StaffProfile, staff_id)
-        if not profile:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Staff profile not found")
-
-        summary = await FinanceService.get_summary(db, period_start, period_end)
-        net_profit = summary["net_profit"]
-
-        ps_result = await db.execute(
-            select(ProfitShare).where(
-                ProfitShare.staff_id == staff_id,
-                ProfitShare.vesting_status == "ACTIVE",
-            )
-        )
-        profit_share = ps_result.scalar_one_or_none()
-
-        share_pct = profit_share.share_percentage if profit_share else Decimal("0")
-        gross_earnings = net_profit * share_pct / Decimal("100")
-
-        total_paid = (
-            await db.execute(
-                select(func.coalesce(func.sum(PayoutLedger.amount_paid), 0)).where(
-                    PayoutLedger.staff_id == staff_id,
-                )
-            )
-        ).scalar() or Decimal("0")
-
-        unpaid_balance = gross_earnings - total_paid
-
-        return {
-            "staff_id": staff_id,
-            "staff_name": profile.name,
-            "share_percentage": share_pct,
-            "vesting_status": profit_share.vesting_status if profit_share else "NONE",
-            "net_profit": net_profit,
-            "gross_earnings": gross_earnings,
-            "total_paid": total_paid,
-            "unpaid_balance": unpaid_balance,
-        }
 
 
 # ---------------------------------------------------------------------------

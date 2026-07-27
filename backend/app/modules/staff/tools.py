@@ -1,12 +1,8 @@
-"""Agent tools for the staff module.
-
-Each tool wraps an existing service method — no business logic duplication.
-Permissions gate by staff RBAC string. All tools require a valid StaffContext.
-"""
+"""Agent tools for the staff module."""
 
 from app.core.agents.tools import Tool, ToolCategory
 
-from .service import StaffProfileService, TaskService, FinanceService
+from .service import StaffProfileService, TaskService
 
 from uuid import UUID
 
@@ -20,12 +16,8 @@ def get_tools() -> list[Tool]:
     return [
         Tool(
             name="search_staff_profiles",
-            description="Search and list all staff profiles. Returns id, name, email, role, status.",
-            parameters={
-                "type": "object",
-                "properties": {},
-                "required": [],
-            },
+            description="Search and list all staff profiles.",
+            parameters={"type": "object", "properties": {}, "required": []},
             handler=lambda ctx, **kw: StaffProfileService.list(ctx.db),
             permissions=["staff.read"],
             category=ToolCategory.READ,
@@ -48,13 +40,13 @@ def get_tools() -> list[Tool]:
         ),
         Tool(
             name="list_tasks",
-            description="List tasks with optional assignee, sprint, or status filter.",
+            description="List tasks with optional filters.",
             parameters={
                 "type": "object",
                 "properties": {
-                    "assignee_id": {"type": "string", "format": "uuid", "description": "Filter by assignee"},
-                    "sprint_id": {"type": "string", "format": "uuid", "description": "Filter by sprint"},
-                    "status": {"type": "string", "description": "Filter by status: TODO, IN_PROGRESS, REVIEW, DONE"},
+                    "assignee_id": {"type": "string", "format": "uuid"},
+                    "sprint_id": {"type": "string", "format": "uuid"},
+                    "status": {"type": "string", "enum": ["TODO", "IN_PROGRESS", "REVIEW", "DONE"]},
                 },
                 "required": [],
             },
@@ -70,22 +62,18 @@ def get_tools() -> list[Tool]:
         ),
         Tool(
             name="create_task",
-            description="Create a new task and optionally assign it to a staff member.",
+            description="Create a new task.",
             parameters={
                 "type": "object",
                 "properties": {
                     "title": {"type": "string", "description": "Task title"},
-                    "description": {"type": "string", "description": "Task description"},
-                    "assignee_id": {"type": "string", "format": "uuid", "description": "Assignee staff profile UUID"},
-                    "sprint_id": {"type": "string", "format": "uuid", "description": "Sprint UUID"},
-                    "due_date": {"type": "string", "format": "date-time", "description": "Due date ISO 8601"},
+                    "assignee_id": {"type": "string", "format": "uuid"},
+                    "sprint_id": {"type": "string", "format": "uuid"},
                 },
                 "required": ["title"],
             },
             handler=lambda ctx, title, **kw: TaskService.create(
-                ctx.db,
-                {"title": title, **{k: v for k, v in kw.items() if v is not None}},
-                ctx.staff_id,
+                ctx.db, {"title": title, **{k: v for k, v in kw.items() if v is not None}}, ctx.staff_id,
             ),
             permissions=["tasks.write"],
             category=ToolCategory.WRITE,
@@ -93,16 +81,12 @@ def get_tools() -> list[Tool]:
         ),
         Tool(
             name="update_task_status",
-            description="Transition a task's status: TODO → IN_PROGRESS → REVIEW → DONE.",
+            description="Transition a task's status.",
             parameters={
                 "type": "object",
                 "properties": {
-                    "task_id": {"type": "string", "format": "uuid", "description": "Task UUID"},
-                    "status": {
-                        "type": "string",
-                        "enum": ["TODO", "IN_PROGRESS", "REVIEW", "DONE"],
-                        "description": "New status",
-                    },
+                    "task_id": {"type": "string", "format": "uuid"},
+                    "status": {"type": "string", "enum": ["TODO", "IN_PROGRESS", "REVIEW", "DONE"]},
                 },
                 "required": ["task_id", "status"],
             },
@@ -111,57 +95,7 @@ def get_tools() -> list[Tool]:
             category=ToolCategory.WRITE,
             exposes_free_text=False,
         ),
-        Tool(
-            name="get_financial_summary",
-            description="Get net profit calculation: gross revenue minus total expenses.",
-            parameters={
-                "type": "object",
-                "properties": {
-                    "period_start": {"type": "string", "format": "date-time", "description": "Start of period ISO 8601"},
-                    "period_end": {"type": "string", "format": "date-time", "description": "End of period ISO 8601"},
-                },
-                "required": [],
-            },
-            handler=lambda ctx, **kw: FinanceService.get_summary(
-                ctx.db,
-                period_start=parse_iso(kw.get("period_start")) if kw.get("period_start") else None,
-                period_end=parse_iso(kw.get("period_end")) if kw.get("period_end") else None,
-            ),
-            permissions=["finance.read"],
-            category=ToolCategory.READ,
-            exposes_free_text=False,
-        ),
-        Tool(
-            name="get_staff_earnings",
-            description="Calculate earnings for a specific staff member (net profit × share % minus paid).",
-            parameters={
-                "type": "object",
-                "properties": {
-                    "staff_id": {"type": "string", "format": "uuid", "description": "Staff profile UUID"},
-                    "period_start": {"type": "string", "format": "date-time", "description": "Start of period ISO 8601"},
-                    "period_end": {"type": "string", "format": "date-time", "description": "End of period ISO 8601"},
-                },
-                "required": ["staff_id"],
-            },
-            handler=lambda ctx, staff_id, **kw: FinanceService.get_staff_earnings(
-                ctx.db,
-                UUID(staff_id),
-                period_start=parse_iso(kw.get("period_start")) if kw.get("period_start") else None,
-                period_end=parse_iso(kw.get("period_end")) if kw.get("period_end") else None,
-            ),
-            permissions=["finance.read"],
-            category=ToolCategory.READ,
-            exposes_free_text=False,
-        ),
     ]
 
 
-from datetime import datetime
 from uuid import UUID
-
-
-def parse_iso(value: str) -> datetime | None:
-    """Parse ISO 8601 string to datetime, or return None."""
-    if not value:
-        return None
-    return datetime.fromisoformat(value)

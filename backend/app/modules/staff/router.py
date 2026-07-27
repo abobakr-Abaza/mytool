@@ -1,4 +1,4 @@
-"""HTTP surface for staff management, sprint/tasks, finance, and chat.
+"""HTTP surface for staff management, sprint/tasks, expenses, and chat.
 
 Mounted at ``/api/v1/staff/*``. All endpoints are gated by staff RBAC roles
 (SUPER_ADMIN / SENIOR_TECH / STAFF_EXECUTION) via ``require_staff_permission``.
@@ -26,17 +26,9 @@ from .schemas import (
     ChatReadRequest,
     ExpenseCreate,
     ExpenseResponse,
-    FinancialSummaryResponse,
-    GrossRevenueCreate,
-    GrossRevenueResponse,
-    PayoutCreate,
-    PayoutResponse,
-    ProfitShareCreate,
-    ProfitShareResponse,
     SprintCreate,
     SprintResponse,
     SprintUpdate,
-    StaffEarningsResponse,
     StaffProfileCreate,
     StaffProfileResponse,
     StaffProfileUpdate,
@@ -44,7 +36,6 @@ from .schemas import (
     TaskResponse,
     TaskStatusUpdate,
     TaskUpdate,
-    VestingUpdate,
     WorkloadResponse,
 )
 from .service import (
@@ -175,18 +166,6 @@ async def get_my_tasks(
         data=[TaskResponse.model_validate(t) for t in tasks],
         total=total, page=page, page_size=page_size,
     )
-
-
-@router.get("/me/earnings", response_model=ApiResponse[StaffEarningsResponse])
-async def get_my_earnings(
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.own"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-    period_start: datetime | None = Query(default=None),
-    period_end: datetime | None = Query(default=None),
-) -> ApiResponse[StaffEarningsResponse]:
-    earnings = await FinanceService.get_staff_earnings(db, ctx.staff_id, period_start, period_end)
-    return ApiResponse(data=StaffEarningsResponse(**earnings))
 
 
 # ==========================================================================
@@ -331,11 +310,11 @@ async def get_workload(
 
 
 # ==========================================================================
-# Finance — Expenses
+# Expenses
 # ==========================================================================
 
 
-@router.get("/finance/expenses", response_model=ApiResponse[list[ExpenseResponse]])
+@router.get("/expenses", response_model=ApiResponse[list[ExpenseResponse]])
 async def list_expenses(
     ctx: Annotated[StaffContext, Depends(get_staff_context)],
     _: Annotated[None, Depends(require_staff_permission("finance.read"))],
@@ -345,7 +324,7 @@ async def list_expenses(
     return ApiResponse(data=[ExpenseResponse.model_validate(e) for e in expenses])
 
 
-@router.post("/finance/expenses", response_model=ApiResponse[ExpenseResponse], status_code=201)
+@router.post("/expenses", response_model=ApiResponse[ExpenseResponse], status_code=201)
 async def create_expense(
     data: ExpenseCreate,
     ctx: Annotated[StaffContext, Depends(get_staff_context)],
@@ -356,7 +335,7 @@ async def create_expense(
     return ApiResponse(data=ExpenseResponse.model_validate(expense))
 
 
-@router.delete("/finance/expenses/{expense_id}", status_code=204)
+@router.delete("/expenses/{expense_id}", status_code=204)
 async def delete_expense(
     expense_id: UUID,
     ctx: Annotated[StaffContext, Depends(get_staff_context)],
@@ -369,127 +348,6 @@ async def delete_expense(
     await FinanceService.delete_expense(db, expense, ctx.staff_id)
 
 
-# ==========================================================================
-# Finance — Gross Revenue
-# ==========================================================================
-
-
-@router.get("/finance/revenue", response_model=ApiResponse[list[GrossRevenueResponse]])
-async def list_revenue(
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.read"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-) -> ApiResponse[list[GrossRevenueResponse]]:
-    revenues = await FinanceService.list_revenue(db)
-    return ApiResponse(data=[GrossRevenueResponse.model_validate(r) for r in revenues])
-
-
-@router.post("/finance/revenue", response_model=ApiResponse[GrossRevenueResponse], status_code=201)
-async def create_revenue(
-    data: GrossRevenueCreate,
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.write"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-) -> ApiResponse[GrossRevenueResponse]:
-    revenue = await FinanceService.create_revenue(db, data.model_dump(exclude_unset=True), ctx.staff_id)
-    return ApiResponse(data=GrossRevenueResponse.model_validate(revenue))
-
-
-# ==========================================================================
-# Finance — Profit Shares
-# ==========================================================================
-
-
-@router.get("/finance/profit-shares", response_model=ApiResponse[list[ProfitShareResponse]])
-async def list_profit_shares(
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.read"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-) -> ApiResponse[list[ProfitShareResponse]]:
-    shares = await FinanceService.list_profit_shares(db)
-    return ApiResponse(data=[ProfitShareResponse.model_validate(s) for s in shares])
-
-
-@router.post("/finance/profit-shares", response_model=ApiResponse[ProfitShareResponse], status_code=201)
-async def create_profit_share(
-    data: ProfitShareCreate,
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.write"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-) -> ApiResponse[ProfitShareResponse]:
-    ps = await FinanceService.create_profit_share(db, data.model_dump(exclude_unset=True), ctx.staff_id)
-    return ApiResponse(data=ProfitShareResponse.model_validate(ps))
-
-
-@router.patch("/finance/profit-shares/{ps_id}/vest", response_model=ApiResponse[ProfitShareResponse])
-async def update_vesting(
-    ps_id: UUID,
-    data: VestingUpdate,
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.write"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-) -> ApiResponse[ProfitShareResponse]:
-    ps = await FinanceService.get_profit_share(db, ps_id)
-    if not ps:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profit share not found")
-    ps = await FinanceService.update_vesting(db, ps, data.vesting_status, ctx.staff_id)
-    return ApiResponse(data=ProfitShareResponse.model_validate(ps))
-
-
-# ==========================================================================
-# Finance — Payouts
-# ==========================================================================
-
-
-@router.get("/finance/payouts", response_model=ApiResponse[list[PayoutResponse]])
-async def list_payouts(
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.read"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-) -> ApiResponse[list[PayoutResponse]]:
-    payouts = await FinanceService.list_payouts(db)
-    return ApiResponse(data=[PayoutResponse.model_validate(p) for p in payouts])
-
-
-@router.post("/finance/payouts", response_model=ApiResponse[PayoutResponse], status_code=201)
-async def create_payout(
-    data: PayoutCreate,
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.write"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-) -> ApiResponse[PayoutResponse]:
-    payout = await FinanceService.create_payout(db, data.model_dump(exclude_unset=True), ctx.staff_id)
-    return ApiResponse(data=PayoutResponse.model_validate(payout))
-
-
-# ==========================================================================
-# Finance — Summary & Earnings
-# ==========================================================================
-
-
-@router.get("/finance/summary", response_model=ApiResponse[FinancialSummaryResponse])
-async def get_financial_summary(
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.read"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-    period_start: datetime | None = Query(default=None),
-    period_end: datetime | None = Query(default=None),
-) -> ApiResponse[FinancialSummaryResponse]:
-    summary = await FinanceService.get_summary(db, period_start, period_end)
-    return ApiResponse(data=FinancialSummaryResponse(**summary))
-
-
-@router.get("/finance/earnings/{staff_id}", response_model=ApiResponse[StaffEarningsResponse])
-async def get_staff_earnings(
-    staff_id: UUID,
-    ctx: Annotated[StaffContext, Depends(get_staff_context)],
-    _: Annotated[None, Depends(require_staff_permission("finance.read"))],
-    db: Annotated[AsyncSession, Depends(get_db)],
-    period_start: datetime | None = Query(default=None),
-    period_end: datetime | None = Query(default=None),
-) -> ApiResponse[StaffEarningsResponse]:
-    earnings = await FinanceService.get_staff_earnings(db, staff_id, period_start, period_end)
-    return ApiResponse(data=StaffEarningsResponse(**earnings))
 
 
 # ==========================================================================
