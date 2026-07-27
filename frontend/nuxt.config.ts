@@ -34,7 +34,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    '@vite-pwa/nuxt'
   ],
 
   components: [
@@ -131,6 +132,46 @@ export default defineNuxtConfig({
     langDir: 'locales',
     strategy: 'no_prefix',
     detectBrowserLanguage: { useCookie: true, cookieKey: 'i18n_locale', alwaysRedirect: false, fallbackLocale: 'ar' }
+  },
+
+  pwa: {
+    registerType: 'autoUpdate',
+    includeAssets: ['favicon.svg'],
+    manifest: {
+      name: 'DentalPin',
+      short_name: 'DentalPin',
+      description: 'Clinic management made simple',
+      theme_color: '#0F172A',
+      background_color: '#FFFFFF',
+      display: 'standalone',
+      orientation: 'portrait-primary',
+      lang: 'ar',
+      dir: 'rtl',
+      icons: [
+        { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+        { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+        { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+      ]
+    },
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+      runtimeCaching: [
+        {
+          urlPattern: /^https?:\/\/.*\/api\/v1\//,
+          handler: 'NetworkFirst',
+          method: 'GET',
+          options: {
+            cacheName: 'api-cache',
+            expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 },
+            cacheableResponse: { statuses: [0, 200] }
+          }
+        }
+      ]
+    },
+    client: {
+      installPrompt: true,
+      periodicSyncForUpdates: 3600
+    }
   },
 
   // Pre-bundle every `i-lucide-*` icon referenced in source into the client
