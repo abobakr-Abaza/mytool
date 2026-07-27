@@ -76,6 +76,15 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def init_db() -> None:
-    """Initialize database tables. For development only."""
+    """Initialize database tables. For development only.
+
+    Schema lifecycle is handled entirely by Alembic migrations via the
+    entrypoint (``alembic upgrade heads``) and the module processor
+    (``PendingProcessor``). This function is **unused** in production
+    and kept only for ad-hoc debugging / test fixtures.
+
+    ``checkfirst=True`` (SQLAlchemy default) prevents errors when
+    tables already exist.
+    """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
