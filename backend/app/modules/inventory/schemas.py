@@ -29,8 +29,8 @@ class ItemCreate(BaseModel):
     name: str = Field(..., max_length=200)
     sku: str | None = Field(None, max_length=60)
     unit: str = "unit"
-    quantity: int = 0
-    min_stock: int = 5
+    quantity: int = Field(default=0, ge=0)
+    min_stock: int = Field(default=5, ge=0)
     unit_price: float | None = None
     notes: str | None = None
     supplier: str | None = Field(None, max_length=200)
@@ -71,7 +71,7 @@ class ItemResponse(BaseModel):
 class MovementCreate(BaseModel):
     item_id: UUID
     movement_type: MovementType
-    quantity: int
+    quantity: int = Field(..., ge=1)
     reference: str | None = Field(None, max_length=120)
     notes: str | None = None
 

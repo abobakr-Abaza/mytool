@@ -1,14 +1,18 @@
 export function useOnlineStatus() {
   const isOnline = ref(true)
   const wasOffline = ref(false)
+  const hasEverBeenOffline = ref(false)
 
   function handleOnline() {
+    if (hasEverBeenOffline.value) {
+      wasOffline.value = true
+    }
     isOnline.value = true
-    wasOffline.value = true
   }
 
   function handleOffline() {
     isOnline.value = false
+    hasEverBeenOffline.value = true
   }
 
   onMounted(() => {
@@ -22,5 +26,5 @@ export function useOnlineStatus() {
     window.removeEventListener('offline', handleOffline)
   })
 
-  return { isOnline, wasOffline }
+  return { isOnline, wasOffline, hasEverBeenOffline }
 }

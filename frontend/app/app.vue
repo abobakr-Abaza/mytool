@@ -6,7 +6,8 @@ const { branding, fetchBranding } = useBranding()
 
 const nuxtUILocale = computed(() => en)
 
-const dir = computed(() => (locale.value === 'ar' ? 'rtl' : 'ltr'))
+const rtlLocales = ['ar', 'he', 'fa', 'ur']
+const dir = computed(() => (rtlLocales.includes(locale.value) ? 'rtl' : 'ltr'))
 
 // Fetch branding on mount (public endpoint, no auth required)
 if (import.meta.client) {
@@ -21,8 +22,8 @@ useHead(() => ({
     { rel: 'icon', href: '/favicon.ico' }
   ],
   htmlAttrs: {
-    lang: locale.value,
-    dir: dir.value
+    lang: () => locale.value,
+    dir: () => dir.value
   },
   title: computed(() => branding.value?.portal_title || 'LaminarDent')
 }))

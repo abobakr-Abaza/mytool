@@ -179,26 +179,63 @@ class InventoryMovementService:
         movement_type = data["movement_type"]
         qty = data["quantity"]
 
-        item = await db.execute(
-            select(InventoryItem).where(
-                InventoryItem.id == item_id,
-                InventoryItem.clinic_id == clinic_id,
+        if movement_type == "out":
+            result = await db.execute(
+                update(InventoryItem)
+                .where(
+                    InventoryItem.id == item_id,
+                    InventoryItem.clinic_id == clinic_id,
+                    InventoryItem.quantity >= qty,
+                )
+                .values(quantity=InventoryItem.quantity - qty)
+                .returning(InventoryItem)
             )
-        )
-        item = item.scalar_one_or_none()
-        if not item:
-            raise ValueError("Item not found")
-
-        if movement_type == "in":
-            item.quantity += qty
-        elif movement_type == "out":
-            if item.quantity < qty:
-                raise ValueError("Insufficient stock")
-            item.quantity -= qty
+            item = result.scalar_one_or_none()
+            if not item:
+                raise ValueError("Insufficient stock or item not found")
+        elif movement_type == "in":
+            result = await db.execute(
+                update(InventoryItem)
+                .where(
+                    InventoryItem.id == item_id,
+                    InventoryItem.clinic_id == clinic_id,
+                )
+                .values(quantity=InventoryItem.quantity + qty)
+                .returning(InventoryItem)
+            )
+            item = result.scalar_one_or_none()
+            if not item:
+                raise ValueError("Item not found")
         elif movement_type == "adjustment":
-            item.quantity = qty
+            if qty < 0:
+                raise ValueError("Adjustment quantity must be non-negative; use negative adjustment via service")
+            result = await db.execute(
+                update(InventoryItem)
+                .where(
+                    InventoryItem.id == item_id,
+                    InventoryItem.clinic_id == clinic_id,
+                )
+                .values(quantity=qty)
+                .returning(InventoryItem)
+            )
+            item = result.scalar_one_or_none()
+            if not item:
+                raise ValueError("Item not found")
         elif movement_type == "return":
-            item.quantity += qty
+            result = await db.execute(
+                update(InventoryItem)
+                .where(
+                    InventoryItem.id == item_id,
+                    InventoryItem.clinic_id == clinic_id,
+                )
+                .values(quantity=InventoryItem.quantity + qty)
+                .returning(InventoryItem)
+            )
+            item = result.scalar_one_or_none()
+            if not item:
+                raise ValueError("Item not found")
+        else:
+            raise ValueError(f"Unknown movement type: {movement_type}")
 
         movement = InventoryMovement(
             clinic_id=clinic_id,

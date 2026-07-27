@@ -233,6 +233,10 @@ async def refresh_token(
             detail="Token has been revoked",
         )
 
+    # Rotate refresh token: increment version so old tokens become invalid
+    user.token_version += 1
+    await db.flush()
+
     # Fetch memberships with clinics for response
     memberships_result = await db.execute(
         select(ClinicMembership)

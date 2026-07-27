@@ -10,7 +10,7 @@ another module's table is :attr:`FileStaging.resolved_document_id`
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any
+from typing import Any
 from uuid import UUID, uuid4
 
 from sqlalchemy import (
@@ -29,9 +29,6 @@ from sqlalchemy.dialects.postgresql import UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base, TimestampMixin
-
-if TYPE_CHECKING:
-    pass
 
 
 class ImportJob(Base, TimestampMixin):

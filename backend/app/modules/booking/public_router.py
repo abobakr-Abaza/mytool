@@ -1,22 +1,26 @@
 from __future__ import annotations
 
 import logging
+import re
 from datetime import UTC, date, datetime, time, timedelta
 from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel, Field
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
+from app.core.auth.models import Clinic
 from app.core.schemas import ApiResponse
 from app.database import get_db
 
 logger = logging.getLogger(__name__)
 
 public_router = APIRouter(prefix="/public/booking", tags=["public"])
+
+SLUG_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,118}$")
 
 
 class ClinicSlotResponse(BaseModel):
@@ -35,11 +39,11 @@ class ClinicProfessionalResponse(BaseModel):
 
 class BookingRequest(BaseModel):
     clinic_slug: str = Field(..., max_length=120)
-    professional_id: str
-    date: str
-    start_time: str
-    patient_name: str = Field(..., max_length=200)
-    patient_phone: str = Field(..., max_length=30)
+    professional_id: str = Field(..., max_length=36)
+    date: str = Field(..., pattern=r"^\d{4}-\d{2}-\d{2}$")
+    start_time: str = Field(..., pattern=r"^\d{2}:\d{2}$")
+    patient_name: str = Field(..., max_length=200, min_length=1)
+    patient_phone: str = Field(..., max_length=30, min_length=5)
     patient_email: str | None = Field(None, max_length=200)
     notes: str | None = Field(None, max_length=500)
 
@@ -52,14 +56,24 @@ class BookingResponse(BaseModel):
     professional_name: str
 
 
+async def _resolve_clinic(db: AsyncSession, slug: str) -> Clinic:
+    if not SLUG_PATTERN.match(slug):
+        raise HTTPException(status_code=400, detail="Invalid clinic slug")
+    result = await db.execute(select(Clinic).where(Clinic.slug == slug))
+    clinic = result.scalar_one_or_none()
+    if not clinic:
+        raise HTTPException(status_code=404, detail="Clinic not found")
+    return clinic
+
+
 @public_router.get("/clinics/{slug}/professionals")
 async def list_professionals(
     slug: str,
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
-    from app.modules.staff.models import StaffMember
-
     clinic = await _resolve_clinic(db, slug)
+
+    from app.modules.staff.models import StaffMember
 
     result = await db.execute(
         select(StaffMember)
@@ -85,11 +99,11 @@ async def get_available_slots(
     slug: str,
     db: Annotated[AsyncSession, Depends(get_db)],
     professional_id: UUID | None = Query(None),
-    date_from: str | None = Query(None),
-    date_to: str | None = Query(None, description="Max 14 days from date_from"),
+    date_from: str | None = Query(None, pattern=r"^\d{4}-\d{2}-\d{2}$"),
+    date_to: str | None = Query(None),
 ):
-    from app.modules.schedules.models import ScheduleOverride, WeeklySchedule
     from app.modules.agenda.models import Appointment
+    from app.modules.schedules.models import ScheduleOverride, WeeklySchedule
     from app.modules.staff.models import StaffMember
 
     clinic = await _resolve_clinic(db, slug)
@@ -111,6 +125,7 @@ async def get_available_slots(
     professionals = result.scalars().all()
 
     prof_ids = [p.id for p in professionals]
+    prof_names = {p.id: f"{p.first_name} {p.last_name}" for p in professionals}
 
     weekly = await db.execute(
         select(WeeklySchedule).where(
@@ -177,16 +192,15 @@ async def get_available_slots(
                     ws_end = time.fromisoformat(ws_end)
 
                 booked_appts = booked.get(prof.id, [])
-                for appt_start_str in _generate_slots(
+                for slot_start in _generate_slots(
                     current, ws_start, ws_end, booked_appts
                 ):
-                    dt_start = datetime.fromisoformat(appt_start_str)
-                    dt_end = dt_start + timedelta(minutes=30)
+                    dt_end = slot_start + timedelta(minutes=30)
                     slots.append(ClinicSlotResponse(
                         professional_id=str(prof.id),
-                        professional_name=f"{prof.first_name} {prof.last_name}",
+                        professional_name=prof_names.get(prof.id, ""),
                         date=current.isoformat(),
-                        start_time=dt_start.strftime("%H:%M"),
+                        start_time=slot_start.strftime("%H:%M"),
                         end_time=dt_end.strftime("%H:%M"),
                     ))
         current += timedelta(days=1)
@@ -202,25 +216,39 @@ async def create_booking(
 ):
     from app.modules.agenda.models import Appointment
     from app.modules.agenda.service import AppointmentService
+    from app.modules.patients.models import Patient
+    from app.modules.staff.models import StaffMember
 
     clinic = await _resolve_clinic(db, slug)
 
     professional_id = UUID(data.professional_id)
     book_date = date.fromisoformat(data.date)
     start_time = time.fromisoformat(data.start_time)
-    end_dt = datetime.combine(book_date, start_time, tzinfo=UTC) + timedelta(minutes=30)
+    start_dt = datetime.combine(book_date, start_time, tzinfo=UTC)
+    end_dt = start_dt + timedelta(minutes=30)
 
+    # Atomic slot lock: SELECT ... FOR UPDATE prevents TOCTOU race
     existing = await db.execute(
         select(Appointment).where(
             Appointment.professional_id == professional_id,
             Appointment.status.in_(["scheduled", "confirmed"]),
-            Appointment.start_time == datetime.combine(book_date, start_time, tzinfo=UTC),
-        )
+            Appointment.start_time == start_dt,
+        ).with_for_update()
     )
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=409, detail="Slot already booked")
 
-    from app.modules.patients.models import Patient
+    prof_result = await db.execute(
+        select(StaffMember).where(
+            StaffMember.id == professional_id,
+            StaffMember.clinic_id == clinic.id,
+            StaffMember.is_active == True,
+        )
+    )
+    prof = prof_result.scalar_one_or_none()
+    if not prof:
+        raise HTTPException(status_code=404, detail="Professional not found")
+    prof_name = f"{prof.first_name} {prof.last_name}"
 
     patient_result = await db.execute(
         select(Patient).where(
@@ -231,16 +259,17 @@ async def create_booking(
     patient = patient_result.scalar_one_or_none()
 
     if not patient:
+        name_parts = data.patient_name.strip().split(" ", 1)
         patient = Patient(
             clinic_id=clinic.id,
-            first_name=data.patient_name.split(" ")[0],
-            last_name=" ".join(data.patient_name.split(" ")[1:]) or ".",
+            first_name=name_parts[0],
+            last_name=name_parts[1] if len(name_parts) > 1 else ".",
             phone=data.patient_phone,
             email=data.patient_email,
             status="active",
         )
         db.add(patient)
-        await db.commit()
+        await db.flush()
         await db.refresh(patient)
 
     appointment = await AppointmentService.create(
@@ -248,7 +277,7 @@ async def create_booking(
         patient_id=patient.id,
         professional_id=professional_id,
         clinic_id=clinic.id,
-        start_time=datetime.combine(book_date, start_time, tzinfo=UTC),
+        start_time=start_dt,
         end_time=end_dt,
         notes=data.notes or "",
         created_by=None,
@@ -259,39 +288,27 @@ async def create_booking(
         date=book_date.isoformat(),
         start_time=data.start_time,
         end_time=end_dt.strftime("%H:%M"),
-        professional_name=str(professional_id),
+        professional_name=prof_name,
     ))
-
-
-async def _resolve_clinic(db: AsyncSession, slug: str):
-    from app.modules.patients.models import Clinic
-
-    result = await db.execute(
-        select(Clinic).where(Clinic.slug == slug)
-    )
-    clinic = result.scalar_one_or_none()
-    if not clinic:
-        raise HTTPException(status_code=404, detail="Clinic not found")
-    return clinic
 
 
 def _generate_slots(
     day: date, start: time, end: time, booked_appts: list
-) -> list[str]:
+) -> list[datetime]:
     from app.modules.agenda.models import Appointment
 
-    slots: list[str] = []
-    current = datetime.combine(day, start)
-    end_dt = datetime.combine(day, end)
+    slots: list[datetime] = []
+    current = datetime.combine(day, start, tzinfo=UTC)
+    end_dt = datetime.combine(day, end, tzinfo=UTC)
 
     booked_times = set()
     for a in booked_appts:
         if isinstance(a, Appointment):
-            booked_times.add(a.start_time.replace(tzinfo=None))
+            booked_times.add(a.start_time)
 
     while current < end_dt:
         if current not in booked_times:
-            slots.append(current.isoformat())
+            slots.append(current)
         current += timedelta(minutes=30)
 
     return slots

@@ -12,7 +12,7 @@ from the JSONB key when present; the JSONB key is left intact for
 now so a rollback is lossless.
 
 Revision ID: 0002
-Revises: sch_0001
+Revises: notif_0001
 Create Date: 2026-04-21
 """
 

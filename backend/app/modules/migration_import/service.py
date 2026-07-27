@@ -55,9 +55,6 @@ from .schemas import (
     WarningView,
 )
 
-if TYPE_CHECKING:
-    pass
-
 logger = logging.getLogger(__name__)
 
 # Refuse files whose major exceeds this. v0.1 supports 0.x only.

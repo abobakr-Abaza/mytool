@@ -1,17 +1,14 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING
 from uuid import uuid4
 
-from sqlalchemy import DateTime, ForeignKey, Index, Integer, Numeric, String, Text, func
+from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Index, Integer, Numeric, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base, TimestampMixin
 
-if TYPE_CHECKING:
-    pass
 
 MOVEMENT_TYPES = ("in", "out", "adjustment", "return")
 
@@ -50,6 +47,7 @@ class InventoryItem(Base, TimestampMixin):
     supplier: Mapped[str | None] = mapped_column(String(200))
 
     __table_args__ = (
+        CheckConstraint("quantity >= 0", name="ck_inventory_items_quantity_non_negative"),
         Index("ix_inventory_items_clinic_status", "clinic_id", "status"),
     )
 

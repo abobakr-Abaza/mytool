@@ -21,6 +21,7 @@ class Clinic(Base, TimestampMixin):
 
     id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     name: Mapped[str] = mapped_column(String(200))
+    slug: Mapped[str] = mapped_column(String(120), unique=True, nullable=True)
     tax_id: Mapped[str] = mapped_column(String(20))  # CIF/NIF
     legal_name: Mapped[str | None] = mapped_column(String(200), default=None)
     address: Mapped[dict | None] = mapped_column(JSONB, default=dict)

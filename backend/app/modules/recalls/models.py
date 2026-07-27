@@ -16,7 +16,6 @@ as snapshots (string + nullable UUID without FK).
 from __future__ import annotations
 
 from datetime import date, datetime
-from typing import TYPE_CHECKING
 from uuid import uuid4
 
 from sqlalchemy import (
@@ -34,10 +33,6 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base, TimestampMixin
-
-if TYPE_CHECKING:
-    pass
-
 
 # Enum-as-string values are documented here, not enforced at the DB
 # level (matches the rest of the codebase — see ``Patient.status``).

@@ -794,19 +794,20 @@ class BudgetService:
         budget.total = items_total - global_discount
 
     @staticmethod
-    async def on_treatment_performed(data: dict) -> None:
-        """Event handler for when a treatment is performed in odontogram.
-
-        Updates the linked budget item status if applicable.
-        """
-        # This will be called by the event bus when odontogram.treatment.performed is published
+    async def on_treatment_performed(data: dict, db: AsyncSession) -> None:
+        """Update linked budget item status when a treatment is performed."""
         budget_item_id = data.get("budget_item_id")
+        new_status = data.get("status", "performed")
         if not budget_item_id:
             return
 
-        # Get DB session from context (this would need to be passed differently in real impl)
-        # For now, this is a placeholder for the event handler
-        pass
+        result = await db.execute(
+            select(BudgetItem).where(BudgetItem.id == UUID(budget_item_id))
+        )
+        item = result.scalar_one_or_none()
+        if item:
+            item.status = new_status
+            await db.flush()
 
 
 class BudgetHistoryService:

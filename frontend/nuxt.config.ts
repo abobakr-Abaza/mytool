@@ -162,8 +162,8 @@ export default defineNuxtConfig({
           method: 'GET',
           options: {
             cacheName: 'api-cache',
-            expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 },
-            cacheableResponse: { statuses: [0, 200] }
+            expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 },
+            cacheableResponse: { statuses: [200] }
           }
         }
       ]

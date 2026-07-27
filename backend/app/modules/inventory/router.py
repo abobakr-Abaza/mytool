@@ -141,7 +141,10 @@ async def update_item(
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
     payload = data.model_dump(exclude_none=True)
-    item = await InventoryItemService.update(db, item, payload)
+    try:
+        item = await InventoryItemService.update(db, item, payload)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     return ApiResponse(data=ItemResponse.model_validate(item))
 
 
