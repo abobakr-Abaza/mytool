@@ -241,19 +241,6 @@
     "installments_count": "عدد الأقساط",
     "next_due": "الاستحقاق القادم"
   },
-  "inventory": {
-    "title": "المخزون",
-    "item": "الصنف",
-    "quantity": "الكمية",
-    "threshold": "الحد الأدنى",
-    "low_stock_alert": "تنبيه نفاذ المخزون",
-    "category": "الفئة",
-    "anesthesia": "مخدر",
-    "filling_material": "مواد حشو",
-    "consumable": "مستهلكات",
-    "instrument": "أداة",
-    "supplier": "المورد"
-  },
   "staff": {
     "title": "الموظفون",
     "profile": "الملف الشخصي",
@@ -409,11 +396,18 @@
     "empty": "لا توجد أصناف في المخزون",
     "allStocked": "جميع الأصناف متوفرة",
     "loading": "جاري تحميل المخزون...",
+    "low_stock_alert": "تنبيه نفاذ المخزون",
     "outOfStock": "نفد",
     "lowStock": "منخفض",
     "minStock": "الحد الأدنى",
+    "threshold": "الحد الأدنى",
+    "item": "الصنف",
     "name": "الاسم",
     "category": "التصنيف",
+    "anesthesia": "مخدر",
+    "filling_material": "مواد حشو",
+    "consumable": "مستهلكات",
+    "instrument": "أداة",
     "sku": "رمز الصنف",
     "unit": "الوحدة",
     "initialStock": "المخزون الابتدائي",
@@ -432,7 +426,6 @@
       "liter": "لتر",
       "kilogram": "كجم"
     }
-    }
   },
   "booking": {
     "title": "حجز موعد",
@@ -450,3 +443,4 @@
     "changeProfessional": "تغيير الطبيب",
     "changeSlot": "تغيير الموعد"
   }
+}
