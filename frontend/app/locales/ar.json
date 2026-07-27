@@ -37,7 +37,8 @@
     "staff": "الموظفون",
     "catalog": "دليل الخدمات",
     "media": "الوسائط",
-    "schedule": "جدول المواعيد"
+    "schedule": "جدول المواعيد",
+    "inventory": "المخزون"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -396,5 +397,40 @@
     "timeout": "انتهت المهلة",
     "try_again": "يرجى المحاولة مرة أخرى",
     "contact_support": "اتصل بالدعم الفني"
+  },
+  "inventory": {
+    "title": "المخزون",
+    "subtitle": "إدارة المواد والمستلزمات",
+    "addItem": "إضافة صنف",
+    "search": "بحث في المخزون...",
+    "all": "الكل",
+    "active": "نشط",
+    "discontinued": "متوقف",
+    "empty": "لا توجد أصناف في المخزون",
+    "allStocked": "جميع الأصناف متوفرة",
+    "loading": "جاري تحميل المخزون...",
+    "outOfStock": "نفد",
+    "lowStock": "منخفض",
+    "minStock": "الحد الأدنى",
+    "name": "الاسم",
+    "category": "التصنيف",
+    "sku": "رمز الصنف",
+    "unit": "الوحدة",
+    "initialStock": "المخزون الابتدائي",
+    "unitPrice": "سعر الوحدة",
+    "supplier": "المورد",
+    "stockMovement": "حركة مخزنية",
+    "stockIn": "إضافة",
+    "stockOut": "صرف",
+    "currentStock": "المخزون الحالي",
+    "quantity": "الكمية",
+    "notes": "ملاحظات",
+    "units": {
+      "unit": "وحدة",
+      "box": "علبة",
+      "pack": "عبوة",
+      "liter": "لتر",
+      "kilogram": "كجم"
+    }
   }
 }

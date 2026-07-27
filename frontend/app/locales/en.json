@@ -37,7 +37,8 @@
     "staff": "Staff",
     "catalog": "Catalog",
     "media": "Media",
-    "schedule": "Schedule"
+    "schedule": "Schedule",
+    "inventory": "Inventory"
   },
   "auth": {
     "login": "Login",
@@ -130,5 +131,40 @@
     "positive": "Value must be positive",
     "invalid_date": "Invalid date",
     "password_match": "Passwords do not match"
+  },
+  "inventory": {
+    "title": "Inventory",
+    "subtitle": "Supplies and stock management",
+    "addItem": "Add Item",
+    "search": "Search inventory...",
+    "all": "All",
+    "active": "Active",
+    "discontinued": "Discontinued",
+    "empty": "No items in inventory",
+    "allStocked": "All items are in stock",
+    "loading": "Loading inventory...",
+    "outOfStock": "Out of Stock",
+    "lowStock": "Low Stock",
+    "minStock": "Min Stock",
+    "name": "Name",
+    "category": "Category",
+    "sku": "SKU",
+    "unit": "Unit",
+    "initialStock": "Initial Stock",
+    "unitPrice": "Unit Price",
+    "supplier": "Supplier",
+    "stockMovement": "Stock Movement",
+    "stockIn": "Add Stock",
+    "stockOut": "Remove Stock",
+    "currentStock": "Current Stock",
+    "quantity": "Quantity",
+    "notes": "Notes",
+    "units": {
+      "unit": "Unit",
+      "box": "Box",
+      "pack": "Pack",
+      "liter": "Liter",
+      "kilogram": "Kg"
+    }
   }
 }

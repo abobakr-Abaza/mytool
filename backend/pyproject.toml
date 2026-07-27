@@ -73,10 +73,9 @@ notifications = "app.modules.notifications:NotificationsModule"
 reports = "app.modules.reports:ReportsModule"
 schedules = "app.modules.schedules:SchedulesModule"
 recalls = "app.modules.recalls:RecallsModule"
-verifactu = "app.modules.verifactu:VerifactuModule"
 migration_import = "app.modules.migration_import:MigrationImportModule"
-
 staff = "app.modules.staff:StaffModule"
+inventory = "app.modules.inventory:InventoryModule"
 
 [tool.setuptools.packages.find]
 where = ["."]
