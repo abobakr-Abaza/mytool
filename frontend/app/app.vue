@@ -6,6 +6,8 @@ const { branding, fetchBranding } = useBranding()
 
 const nuxtUILocale = computed(() => en)
 
+const dir = computed(() => (locale.value === 'ar' ? 'rtl' : 'ltr'))
+
 // Fetch branding on mount (public endpoint, no auth required)
 if (import.meta.client) {
   fetchBranding()
@@ -19,7 +21,8 @@ useHead(() => ({
     { rel: 'icon', href: '/favicon.ico' }
   ],
   htmlAttrs: {
-    lang: locale.value
+    lang: locale.value,
+    dir: dir.value
   },
   title: computed(() => branding.value?.portal_title || 'LaminarDent')
 }))
@@ -32,8 +35,10 @@ useSeoMeta({
 
 <template>
   <UApp :locale="nuxtUILocale">
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
+    <div :dir="dir" class="min-h-screen">
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </div>
   </UApp>
 </template>

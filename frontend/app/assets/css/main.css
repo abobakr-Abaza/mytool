@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 @import "@fontsource-variable/inter";
+@import "@fontsource-variable/noto-sans-arabic";
 @import "./typography.css";
 
 @theme static {
@@ -323,6 +324,33 @@ body {
 
 [data-slot="content"] {
   overflow-y: auto !important;
+}
+
+/* RTL overrides */
+[dir="rtl"] .ltr\:ml-auto {
+  margin-right: auto;
+  margin-left: unset;
+}
+[dir="rtl"] .ltr\:mr-auto {
+  margin-left: auto;
+  margin-right: unset;
+}
+[dir="rtl"] .ltr\:text-left {
+  text-align: right;
+}
+[dir="rtl"] .ltr\:text-right {
+  text-align: left;
+}
+[dir="rtl"] .ltr\:pl-0 {
+  padding-right: 0;
+}
+[dir="rtl"] .ltr\:pr-0 {
+  padding-left: 0;
+}
+
+/* Arabic font support — Noto Sans Arabic fallback */
+[lang="ar"] {
+  font-family: 'Noto Sans Arabic', 'Inter Variable', 'Inter', system-ui, sans-serif;
 }
 
 

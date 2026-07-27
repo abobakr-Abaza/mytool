@@ -123,13 +123,14 @@ export default defineNuxtConfig({
 
   i18n: {
     locales: [
-      { code: 'en', name: 'English', file: 'en.json' }
+      { code: 'ar', name: 'العربية', file: 'ar.json', dir: 'rtl' },
+      { code: 'en', name: 'English', file: 'en.json', dir: 'ltr' }
     ],
-    defaultLocale: 'en',
+    defaultLocale: 'ar',
     lazy: true,
     langDir: 'locales',
     strategy: 'no_prefix',
-    detectBrowserLanguage: false
+    detectBrowserLanguage: { useCookie: true, cookieKey: 'i18n_locale', alwaysRedirect: false, fallbackLocale: 'ar' }
   },
 
   // Pre-bundle every `i-lucide-*` icon referenced in source into the client
