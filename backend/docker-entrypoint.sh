@@ -15,6 +15,10 @@ BEGIN
         SELECT 1 FROM information_schema.tables
         WHERE table_schema = 'public' AND table_name = 'clinic_weekly_schedules'
      )
+     AND EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_name = 'alembic_version'
+     )
      AND NOT EXISTS (SELECT 1 FROM alembic_version WHERE version_num = 'sch_0001')
   THEN
     INSERT INTO alembic_version(version_num) VALUES ('sch_0001');
@@ -25,7 +29,7 @@ $$;
 SQL
 
   echo "[entrypoint] Cleaning stale alembic_version entries (orphaned by removed modules)..."
-  python /app/scripts/clean_stale_migrations.py || echo "[entrypoint] Staleness check skipped (non-fatal)"
+  PYTHONPATH=/app python /app/scripts/clean_stale_migrations.py || echo "[entrypoint] Staleness check skipped (non-fatal)"
 
   echo "[entrypoint] Running alembic upgrade heads..."
   alembic upgrade heads

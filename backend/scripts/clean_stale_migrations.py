@@ -20,6 +20,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+# Ensure the backend root is on sys.path so `app` resolves even without
+# PYTHONPATH being set (e.g. when called from docker-entrypoint.sh).
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 
 def _get_valid_revisions() -> set[str]:
     """Return all revision IDs declared in migration files under /app."""

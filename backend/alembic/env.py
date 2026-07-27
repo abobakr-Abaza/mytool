@@ -40,7 +40,7 @@ from app.modules.recalls.models import Recall, RecallContactAttempt, RecallSetti
 from app.modules.schedules.models import ClinicOverride, ClinicWeeklySchedule, ProfessionalOverride, ProfessionalWeeklySchedule, ScheduleShift  # noqa: F401
 from app.modules.treatment_plan.models import PlannedTreatmentItem, TreatmentPlan  # noqa: F401
 from app.modules.whatsapp_kapso.models import WhatsappKapsoSettings, WhatsappKapsoTemplate  # noqa: F401
-from app.modules.staff.models import AuditLog, ChatMessage, ChatUnreadStatus, Expense, GrossRevenue, PayoutLedger, ProfitShare, Sprint, StaffProfile, Task, TaskStatusLog  # noqa: F401
+from app.modules.staff.models import AuditLog, ChatMessage, ChatUnreadStatus, Expense, Sprint, StaffProfile, Task, TaskStatusLog  # noqa: F401
 
 ALEMBIC_DIR = Path(__file__).parent
 BACKEND_ROOT = ALEMBIC_DIR.parent
