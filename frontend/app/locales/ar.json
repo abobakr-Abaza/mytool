@@ -432,5 +432,21 @@
       "liter": "لتر",
       "kilogram": "كجم"
     }
+    }
+  },
+  "booking": {
+    "title": "حجز موعد",
+    "subtitle": "احجز موعدك في العيادة بسهولة",
+    "selectProfessional": "اختر الطبيب",
+    "selectDate": "اختر التاريخ والوقت",
+    "yourName": "الاسم",
+    "yourPhone": "رقم الهاتف",
+    "yourEmail": "البريد الإلكتروني",
+    "notes": "ملاحظات",
+    "confirmBooking": "تأكيد الحجز",
+    "successTitle": "تم الحجز بنجاح",
+    "successMessage": "سيتم التواصل معك لتأكيد الموعد",
+    "noSlots": "لا توجد مواعيد متاحة",
+    "changeProfessional": "تغيير الطبيب",
+    "changeSlot": "تغيير الموعد"
   }
-}

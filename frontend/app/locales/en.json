@@ -166,5 +166,21 @@
       "liter": "Liter",
       "kilogram": "Kg"
     }
+  },
+  "booking": {
+    "title": "Book Appointment",
+    "subtitle": "Schedule your visit easily",
+    "selectProfessional": "Select Doctor",
+    "selectDate": "Choose date & time",
+    "yourName": "Your Name",
+    "yourPhone": "Phone Number",
+    "yourEmail": "Email",
+    "notes": "Notes",
+    "confirmBooking": "Confirm Booking",
+    "successTitle": "Booking Confirmed",
+    "successMessage": "We will contact you to confirm",
+    "noSlots": "No available slots",
+    "changeProfessional": "Change Doctor",
+    "changeSlot": "Change Time"
   }
 }

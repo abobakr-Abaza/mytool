@@ -76,6 +76,7 @@ recalls = "app.modules.recalls:RecallsModule"
 migration_import = "app.modules.migration_import:MigrationImportModule"
 staff = "app.modules.staff:StaffModule"
 inventory = "app.modules.inventory:InventoryModule"
+booking = "app.modules.booking:BookingModule"
 
 [tool.setuptools.packages.find]
 where = ["."]
