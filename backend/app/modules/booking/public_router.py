@@ -73,24 +73,26 @@ async def list_professionals(
 ):
     clinic = await _resolve_clinic(db, slug)
 
-    from app.modules.staff.models import StaffMember
+    from app.core.auth.models import ClinicMembership, User
 
     result = await db.execute(
-        select(StaffMember)
+        select(User)
+        .join(ClinicMembership, ClinicMembership.user_id == User.id)
         .where(
-            StaffMember.clinic_id == clinic.id,
-            StaffMember.is_active == True,
+            ClinicMembership.clinic_id == clinic.id,
+            ClinicMembership.role.in_(["dentist", "hygienist"]),
+            User.is_active == True,
         )
-        .order_by(StaffMember.first_name)
+        .order_by(User.first_name, User.last_name)
     )
-    staff = result.scalars().all()
+    users = result.scalars().all()
 
     return ApiResponse(data=[
         ClinicProfessionalResponse(
-            id=str(s.id),
-            name=f"{s.first_name} {s.last_name}",
-            specialty=getattr(s, "specialty", None),
-        ) for s in staff
+            id=str(u.id),
+            name=u.full_name,
+            specialty=getattr(u, "professional_id", None),
+        ) for u in users
     ])
 
 
@@ -102,9 +104,9 @@ async def get_available_slots(
     date_from: str | None = Query(None, pattern=r"^\d{4}-\d{2}-\d{2}$"),
     date_to: str | None = Query(None),
 ):
+    from app.core.auth.models import ClinicMembership, User
     from app.modules.agenda.models import Appointment
     from app.modules.schedules.models import ScheduleOverride, WeeklySchedule
-    from app.modules.staff.models import StaffMember
 
     clinic = await _resolve_clinic(db, slug)
 
@@ -115,17 +117,18 @@ async def get_available_slots(
     if (end - start).days > 14:
         raise HTTPException(status_code=400, detail="Max 14-day range")
 
-    q = select(StaffMember).where(
-        StaffMember.clinic_id == clinic.id,
-        StaffMember.is_active == True,
+    q = select(User).join(ClinicMembership, ClinicMembership.user_id == User.id).where(
+        ClinicMembership.clinic_id == clinic.id,
+        ClinicMembership.role.in_(["dentist", "hygienist"]),
+        User.is_active == True,
     )
     if professional_id:
-        q = q.where(StaffMember.id == professional_id)
+        q = q.where(User.id == professional_id)
     result = await db.execute(q)
-    professionals = result.scalars().all()
+    users = result.scalars().all()
 
-    prof_ids = [p.id for p in professionals]
-    prof_names = {p.id: f"{p.first_name} {p.last_name}" for p in professionals}
+    prof_ids = [u.id for u in users]
+    prof_names = {u.id: u.full_name for u in users}
 
     weekly = await db.execute(
         select(WeeklySchedule).where(
@@ -164,7 +167,7 @@ async def get_available_slots(
     slots: list[dict] = []
     current = start
     while current <= end:
-        for prof in professionals:
+        for prof in users:
             day_name = current.strftime("%A").lower()
 
             day_overrides = override_map.get(prof.id, [])
@@ -214,10 +217,10 @@ async def create_booking(
     data: BookingRequest,
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
+    from app.core.auth.models import ClinicMembership, User
     from app.modules.agenda.models import Appointment
     from app.modules.agenda.service import AppointmentService
     from app.modules.patients.models import Patient
-    from app.modules.staff.models import StaffMember
 
     clinic = await _resolve_clinic(db, slug)
 
@@ -239,16 +242,17 @@ async def create_booking(
         raise HTTPException(status_code=409, detail="Slot already booked")
 
     prof_result = await db.execute(
-        select(StaffMember).where(
-            StaffMember.id == professional_id,
-            StaffMember.clinic_id == clinic.id,
-            StaffMember.is_active == True,
+        select(User).join(ClinicMembership, ClinicMembership.user_id == User.id).where(
+            User.id == professional_id,
+            ClinicMembership.clinic_id == clinic.id,
+            ClinicMembership.role.in_(["dentist", "hygienist"]),
+            User.is_active == True,
         )
     )
     prof = prof_result.scalar_one_or_none()
     if not prof:
         raise HTTPException(status_code=404, detail="Professional not found")
-    prof_name = f"{prof.first_name} {prof.last_name}"
+    prof_name = prof.full_name
 
     patient_result = await db.execute(
         select(Patient).where(

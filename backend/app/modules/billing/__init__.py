@@ -28,7 +28,7 @@ class BillingModule(BaseModule):
         "author": "LaminarDent Core Team",
         "license": "BSL-1.1",
         "category": "official",
-        "depends": ["patients", "catalog", "budget", "payments"],
+        "depends": ["patients", "catalog", "budget", "payments", "reports"],
         "installable": True,
         "auto_install": True,
         "removable": False,

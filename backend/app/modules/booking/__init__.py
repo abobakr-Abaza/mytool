@@ -15,7 +15,7 @@ class BookingModule(BaseModule):
         "author": "LaminarDent Core Team",
         "license": "BSL-1.1",
         "category": "official",
-        "depends": ["agenda", "patients"],
+        "depends": ["agenda", "patients", "schedules"],
         "installable": True,
         "auto_install": True,
         "removable": True,

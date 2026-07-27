@@ -1,5 +1,6 @@
 """Application configuration via environment variables."""
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -33,6 +34,11 @@ class Settings(BaseSettings):
 
     # Testing
     TESTING: bool = False
+
+    @field_validator("BUDGET_PUBLIC_SECRET_KEY", mode="before")
+    @classmethod
+    def budget_secret_fallback(cls, v: str | None, info) -> str:
+        return v or info.data.get("SECRET_KEY", "")
 
     # Module system
     DENTALPIN_DEV_MODULE_SCAN: bool = True  # Fallback filesystem scan for dev
@@ -79,8 +85,6 @@ class Settings(BaseSettings):
     # Default sender
     EMAIL_FROM_ADDRESS: str = "noreply@laminardent.com"
     EMAIL_FROM_NAME: str = "عيادة الأسنان"
-
-
 
     @property
     def allowed_origins_list(self) -> list[str]:
