@@ -12,6 +12,26 @@ COPY backend/app/modules /module_layers
 
 COPY frontend/ ./
 
+# Generate modules.json from available module layers so the production
+# build includes their pages, components, and i18n translations.
+RUN node -e "
+const fs = require('fs');
+const path = require('path');
+const layers = [];
+const modules = [];
+const dir = '/module_layers';
+if (fs.existsSync(dir)) {
+  fs.readdirSync(dir).forEach(mod => {
+    const p = path.join(dir, mod, 'frontend');
+    if (fs.existsSync(path.join(p, 'nuxt.config.ts')) || fs.existsSync(path.join(p, 'nuxt.config.js'))) {
+      layers.push(p);
+      modules.push({ name: mod, path: p });
+    }
+  });
+}
+fs.writeFileSync('modules.json', JSON.stringify({ layers, modules, version: 1 }));
+"
+
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN npm run build
 
