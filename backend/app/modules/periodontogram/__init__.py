@@ -59,3 +59,8 @@ class PeriodontogramModule(BaseModule):
             "odontogram.treatment.performed": on_odontogram_treatment_performed,
             "patient.archived": on_patient_archived,
         }
+
+    def get_tools(self) -> list:
+        from .tools import get_tools
+
+        return get_tools()
