@@ -28,7 +28,10 @@ class BillingModule(BaseModule):
         "author": "LaminarDent Core Team",
         "license": "BSL-1.1",
         "category": "official",
-        "depends": ["patients", "catalog", "budget", "payments", "reports"],
+        # reports is intentionally excluded — reports already depends on
+        # billing, and billing's only use of reports (router.py line 1148)
+        # is a lazy import inside a function body.
+        "depends": ["patients", "catalog", "budget", "payments"],
         "installable": True,
         "auto_install": True,
         "removable": False,
