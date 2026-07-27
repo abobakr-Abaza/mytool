@@ -24,6 +24,9 @@ END
 $$;
 SQL
 
+  echo "[entrypoint] Cleaning stale alembic_version entries (orphaned by removed modules)..."
+  python /app/scripts/clean_stale_migrations.py || echo "[entrypoint] Staleness check skipped (non-fatal)"
+
   echo "[entrypoint] Running alembic upgrade heads..."
   alembic upgrade heads
 fi
