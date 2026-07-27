@@ -28,7 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 def _get_valid_revisions() -> set[str]:
     """Return all revision IDs declared in migration files under /app."""
     revs: set[str] = set()
-    pattern = re.compile(r'^revision\s*=\s*[\x27"]([^\x27"]+)[\x27"]', re.M)
+    pattern = re.compile(r'^revision[^=]*=\s*[\x27"]([^\x27"]+)[\x27"]', re.M)
     for f in Path("/app").rglob("migrations/versions/*.py"):
         m = pattern.search(f.read_text())
         if m:
@@ -64,6 +64,13 @@ def main() -> int:
 
     valid = _get_valid_revisions()
     db_revs = _get_db_revisions(db_url)
+
+    if not valid:
+        print(
+            "[clean_stale_migrations] No migration files found at /app — "
+            "cannot determine valid revisions; skipping to avoid accidental wipe",
+        )
+        return 1
 
     stale = db_revs - valid
     if not stale:
