@@ -89,15 +89,16 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-01-15',
 
-  vite: {
-    server: {
-      proxy: {
-        '/api': {
-          target: process.env.API_PROXY_TARGET || 'http://backend:8000',
-          changeOrigin: true
-        }
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: process.env.API_PROXY_TARGET || 'http://backend:8000',
+        changeOrigin: true
       }
-    },
+    }
+  },
+
+  vite: {
     optimizeDeps: {
       // Pre-bundle deps that Vite otherwise discovers at runtime. Runtime
       // discovery triggers a full page reload, which in CI races Playwright's
