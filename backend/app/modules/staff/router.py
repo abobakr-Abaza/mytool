@@ -466,6 +466,7 @@ async def chat_websocket(websocket: WebSocket, token: str = Query(...)):
 @router.get("/chat/history", response_model=ApiResponse[ChatHistoryResponse])
 async def get_chat_history(
     ctx: Annotated[StaffContext, Depends(get_staff_context)],
+    _: Annotated[None, Depends(require_staff_permission("chat.own"))],
     db: Annotated[AsyncSession, Depends(get_db)],
     channel_type: str = Query(...),
     channel_id: str = Query(...),
@@ -494,6 +495,7 @@ async def get_chat_history(
 async def mark_channel_read(
     data: ChatReadRequest,
     ctx: Annotated[StaffContext, Depends(get_staff_context)],
+    _: Annotated[None, Depends(require_staff_permission("chat.own"))],
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> None:
     await ChatService.mark_read(db, ctx.staff_id, data.channel_type, data.channel_id)
@@ -502,6 +504,7 @@ async def mark_channel_read(
 @router.get("/chat/unread", response_model=ApiResponse[list[dict]])
 async def get_unread_counts(
     ctx: Annotated[StaffContext, Depends(get_staff_context)],
+    _: Annotated[None, Depends(require_staff_permission("chat.own"))],
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> ApiResponse[list[dict]]:
     counts = await ChatService.get_unread_counts(db, ctx.staff_id)

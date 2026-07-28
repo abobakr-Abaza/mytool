@@ -109,6 +109,7 @@ def permission_matches(required: str, granted: str) -> bool:
     - "*" matches everything
     - "module.*" matches "module.resource.action"
     - "module.resource.*" matches "module.resource.action"
+    - "*.action" matches "module.resource.action"
     """
     if granted == "*":
         return True
@@ -116,6 +117,10 @@ def permission_matches(required: str, granted: str) -> bool:
     if granted.endswith(".*"):
         prefix = granted[:-1]  # "clinical.*" -> "clinical."
         return required.startswith(prefix)
+
+    if granted.startswith("*."):
+        suffix = granted[1:]  # "*.delete" -> ".delete"
+        return required.endswith(suffix)
 
     return required == granted
 

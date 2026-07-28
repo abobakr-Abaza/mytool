@@ -56,7 +56,11 @@ async def get_current_user(
         raise credentials_exception
 
     # Fetch user from database
-    result = await db.execute(select(User).where(User.id == UUID(user_id)))
+    try:
+        parsed_id = UUID(user_id)
+    except (ValueError, AttributeError):
+        raise credentials_exception
+    result = await db.execute(select(User).where(User.id == parsed_id))
     user = result.scalar_one_or_none()
 
     if user is None:

@@ -173,7 +173,7 @@ class NotificationService:
             **data,
         )
         db.add(template)
-        await db.commit()
+        await db.flush()
         await db.refresh(template)
         return template
 
@@ -191,7 +191,7 @@ class NotificationService:
             if value is not None:
                 setattr(template, key, value)
 
-        await db.commit()
+        await db.flush()
         await db.refresh(template)
         return template
 
@@ -205,7 +205,7 @@ class NotificationService:
             raise ValueError("Cannot delete system templates")
 
         await db.delete(template)
-        await db.commit()
+        await db.flush()
 
     @staticmethod
     async def upsert_provider_template(
@@ -248,7 +248,7 @@ class NotificationService:
         tmpl.provider_template_name = provider_template_name
         tmpl.provider_template_status = provider_template_status
         tmpl.is_active = True
-        await db.commit()
+        await db.flush()
         await db.refresh(tmpl)
         return tmpl
 
@@ -288,7 +288,7 @@ class NotificationService:
             patient_id=patient_id,
         )
         db.add(prefs)
-        await db.commit()
+        await db.flush()
         await db.refresh(prefs)
         return prefs
 
@@ -308,7 +308,7 @@ class NotificationService:
             if value is not None:
                 setattr(prefs, key, value)
 
-        await db.commit()
+        await db.flush()
         await db.refresh(prefs)
         return prefs
 
@@ -342,7 +342,7 @@ class NotificationService:
         # Create default settings
         settings = ClinicNotificationSettings(clinic_id=clinic_id)
         db.add(settings)
-        await db.commit()
+        await db.flush()
         await db.refresh(settings)
         return settings
 
@@ -367,7 +367,7 @@ class NotificationService:
                     current_settings[key] = value
             settings.settings = current_settings
 
-        await db.commit()
+        await db.flush()
         await db.refresh(settings)
         return settings
 
@@ -402,7 +402,7 @@ class NotificationService:
             provider="disabled",
         )
         db.add(settings)
-        await db.commit()
+        await db.flush()
         await db.refresh(settings)
         return settings
 
@@ -438,7 +438,7 @@ class NotificationService:
             if hasattr(settings, key) and value is not None:
                 setattr(settings, key, value)
 
-        await db.commit()
+        await db.flush()
         await db.refresh(settings)
         return settings
 
@@ -511,7 +511,7 @@ class NotificationService:
             settings = await NotificationService.get_or_create_smtp_settings(db, clinic_id)
             settings.is_verified = True
             settings.last_verified_at = datetime.now(UTC)
-            await db.commit()
+            await db.flush()
 
         return result
 

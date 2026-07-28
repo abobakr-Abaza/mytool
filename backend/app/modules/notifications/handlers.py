@@ -11,6 +11,7 @@ from uuid import UUID
 
 from sqlalchemy import select
 
+from app.core.events import EventType
 from app.database import async_session_maker
 
 logger = logging.getLogger(__name__)
@@ -96,7 +97,7 @@ class NotificationHandlers:
                     to_address=patient.email,
                     context=context,
                     patient_id=patient.id,
-                    triggered_by_event="appointment.scheduled",
+                    triggered_by_event=EventType.APPOINTMENT_SCHEDULED.value,
                 )
 
         except Exception as e:
@@ -175,7 +176,7 @@ class NotificationHandlers:
                     to_address=patient.email,
                     context=context,
                     patient_id=patient.id,
-                    triggered_by_event="appointment.cancelled",
+                    triggered_by_event=EventType.APPOINTMENT_CANCELLED.value,
                 )
 
         except Exception as e:
@@ -227,7 +228,7 @@ class NotificationHandlers:
                     to_address=patient.email,
                     context=context,
                     patient_id=patient.id,
-                    triggered_by_event="patient.created",
+                    triggered_by_event=EventType.PATIENT_CREATED.value,
                 )
 
         except Exception as e:
@@ -336,7 +337,7 @@ class NotificationHandlers:
                     to_address=patient.email,
                     context=context,
                     patient_id=patient.id,
-                    triggered_by_event="budget.sent",
+                    triggered_by_event=EventType.BUDGET_SENT.value,
                 )
 
         except Exception as e:
@@ -440,7 +441,7 @@ class NotificationHandlers:
                     to_address=patient.email,
                     context=context,
                     patient_id=patient.id,
-                    triggered_by_event="invoice.sent",
+                    triggered_by_event=EventType.INVOICE_SENT.value,
                 )
 
         except Exception as e:
@@ -502,7 +503,7 @@ class NotificationHandlers:
                     to_address=patient.email,
                     context=context,
                     patient_id=patient.id,
-                    triggered_by_event="budget.accepted",
+                    triggered_by_event=EventType.BUDGET_ACCEPTED.value,
                 )
 
         except Exception as e:

@@ -7,7 +7,7 @@ from uuid import UUID
 from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.events import event_bus
+from app.core.events import EventType, event_bus
 from app.modules.inventory.models import InventoryCategory, InventoryItem, InventoryMovement
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ class InventoryCategoryService:
     async def create(db: AsyncSession, clinic_id: UUID, data: dict) -> InventoryCategory:
         cat = InventoryCategory(clinic_id=clinic_id, **data)
         db.add(cat)
-        await db.commit()
+        await db.flush()
         await db.refresh(cat)
         return cat
 
@@ -46,14 +46,14 @@ class InventoryCategoryService:
     async def update(db: AsyncSession, category: InventoryCategory, data: dict) -> InventoryCategory:
         for key, value in data.items():
             setattr(category, key, value)
-        await db.commit()
+        await db.flush()
         await db.refresh(category)
         return category
 
     @staticmethod
     async def delete(db: AsyncSession, category: InventoryCategory) -> None:
         await db.delete(category)
-        await db.commit()
+        await db.flush()
 
 
 class InventoryItemService:
@@ -75,7 +75,7 @@ class InventoryItemService:
     async def create(db: AsyncSession, clinic_id: UUID, data: dict) -> InventoryItem:
         item = InventoryItem(clinic_id=clinic_id, **data)
         db.add(item)
-        await db.commit()
+        await db.flush()
         await db.refresh(item)
         return item
 
@@ -95,14 +95,14 @@ class InventoryItemService:
             raise ValueError("Use record_movement to change quantity")
         for key, value in data.items():
             setattr(item, key, value)
-        await db.commit()
+        await db.flush()
         await db.refresh(item)
         return item
 
     @staticmethod
     async def delete(db: AsyncSession, item: InventoryItem) -> None:
         await db.delete(item)
-        await db.commit()
+        await db.flush()
 
     @staticmethod
     async def get_low_stock_items(db: AsyncSession, clinic_id: UUID) -> Sequence[InventoryItem]:
@@ -247,10 +247,10 @@ class InventoryMovementService:
             moved_by=user_id,
         )
         db.add(movement)
-        await db.commit()
+        await db.flush()
         await db.refresh(movement)
 
-        event_bus.publish("inventory.stock_changed", {
+        await event_bus.publish(EventType.INVENTORY_STOCK_CHANGED, {
             "item_id": str(item_id),
             "movement_type": movement_type,
             "quantity": qty,
@@ -259,7 +259,7 @@ class InventoryMovementService:
         })
 
         if item.quantity < item.min_stock:
-            event_bus.publish("inventory.low_stock", {
+            await event_bus.publish(EventType.INVENTORY_LOW_STOCK, {
                 "item_id": str(item_id),
                 "item_name": item.name,
                 "quantity": item.quantity,

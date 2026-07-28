@@ -22,14 +22,15 @@ from pathlib import Path
 
 # Ensure the backend root is on sys.path so `app` resolves even without
 # PYTHONPATH being set (e.g. when called from docker-entrypoint.sh).
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR))
 
 
 def _get_valid_revisions() -> set[str]:
     """Return all revision IDs declared in migration files under /app."""
     revs: set[str] = set()
     pattern = re.compile(r'^revision[^=]*=\s*[\x27"]([^\x27"]+)[\x27"]', re.M)
-    for f in Path("/app").rglob("migrations/versions/*.py"):
+    for f in BASE_DIR.rglob("migrations/versions/*.py"):
         m = pattern.search(f.read_text())
         if m:
             revs.add(m.group(1))
@@ -67,10 +68,10 @@ def main() -> int:
 
     if not valid:
         print(
-            "[clean_stale_migrations] No migration files found at /app — "
-            "cannot determine valid revisions; skipping to avoid accidental wipe",
+            "[clean_stale_migrations] No migration files found — "
+            "nothing to clean; skipping",
         )
-        return 1
+        return 0
 
     stale = db_revs - valid
     if not stale:

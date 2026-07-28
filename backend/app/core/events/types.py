@@ -226,3 +226,7 @@ class EventType:
     COPILOT_TOOL_INVOKED = "copilot.tool.invoked"
     COPILOT_BUDGET_THRESHOLD_REACHED = "copilot.budget.threshold_reached"
     COPILOT_DIGEST_SENT = "copilot.digest.sent"
+
+    # Inventory events (inventory module — stock management)
+    INVENTORY_STOCK_CHANGED = "inventory.stock_changed"
+    INVENTORY_LOW_STOCK = "inventory.low_stock"

@@ -18,6 +18,7 @@ class CategoryCreate(BaseModel):
 class CategoryResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: UUID
+    clinic_id: UUID
     name: str
     description: str | None
     created_at: datetime
@@ -52,6 +53,7 @@ class ItemUpdate(BaseModel):
 class ItemResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: UUID
+    clinic_id: UUID
     category_id: UUID | None
     name: str
     sku: str | None
@@ -79,6 +81,7 @@ class MovementCreate(BaseModel):
 class MovementResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: UUID
+    clinic_id: UUID
     item_id: UUID
     movement_type: str
     quantity: int
@@ -86,6 +89,8 @@ class MovementResponse(BaseModel):
     notes: str | None
     moved_by: UUID
     moved_at: datetime
+    created_at: datetime
+    updated_at: datetime
 
 
 class AlertResponse(BaseModel):
