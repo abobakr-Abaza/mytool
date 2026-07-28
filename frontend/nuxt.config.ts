@@ -87,18 +87,17 @@ export default defineNuxtConfig({
   // restart. Watching the file makes the round-trip automatic.
   watch: [modulesJsonPath],
 
-  nitro: {
-    devProxy: {
-      '/api': {
-        target: process.env.API_PROXY_TARGET || 'http://backend:8000',
-        changeOrigin: true
-      }
-    }
-  },
-
   compatibilityDate: '2025-01-15',
 
   vite: {
+    server: {
+      proxy: {
+        '/api': {
+          target: process.env.API_PROXY_TARGET || 'http://backend:8000',
+          changeOrigin: true
+        }
+      }
+    },
     optimizeDeps: {
       // Pre-bundle deps that Vite otherwise discovers at runtime. Runtime
       // discovery triggers a full page reload, which in CI races Playwright's
