@@ -9,21 +9,10 @@ set -e
 
 echo "Resetting database..."
 
-# Reset alembic version
-docker compose exec -T db psql -U dental -d dental_clinic -c "DELETE FROM alembic_version;" 2>/dev/null || true
-
-# Drop all tables (in correct order to handle foreign keys)
-docker compose exec -T db psql -U dental -d dental_clinic << 'EOF'
-DO $$
-DECLARE
-    r RECORD;
-BEGIN
-    FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename != 'alembic_version')
-    LOOP
-        EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
-    END LOOP;
-END $$;
-EOF
+# Drop the entire public schema and recreate it — this removes tables,
+# composite types, enums, and sequences atomically (avoids the
+# pg_type_typname_nsp_index collision that can occur with per-table drops).
+docker compose exec -T db psql -U dental -d dental_clinic -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;" 2>/dev/null || true
 
 # Run migrations
 docker compose exec -T backend alembic upgrade heads
